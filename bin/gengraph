@@ -1,18 +1,11 @@
 #!/bin/sh
 
-if cd $HOME/.sag/var
-then
-    (cat sumold-0001la;  ../plot/gen0001la.pl  rl0001) >sumtmp-0001la
-    (cat sumold-0001ps;  ../plot/gen0001ps.pl  rl0001) >sumtmp-0001ps
-    (cat sumold-0001net; ../plot/gen0001net.pl rl0001) >sumtmp-0001net
-    (cat sumold-0005mem; ../plot/gen0005mem.pl rl0005) >sumtmp-0005mem
-    (cat sumold-0100df;  ../plot/gen0100df.pl  rl0100) >sumtmp-0100df
+cd $HOME/.sag/var || exit
 
-    ../bin/gnuplot ../plot/gen0001la.gp
-    ../bin/gnuplot ../plot/gen0001ps.gp
-    ../bin/gnuplot ../plot/gen0001net.gp
-    ../bin/gnuplot ../plot/gen0005mem.gp
-    ../bin/gnuplot ../plot/gen0100df.gp
+for target in 0001la 0001ps 0001net 0005mem 0100df
+do
+    (cat sumold-$target;  ../plot/gen$target.pl rl${target%%[a-z]*}) > sumtmp-$target
+    ../bin/gnuplot ../plot/gen$target.gp
+    # rm sumtmp-$target
+done
 
-    # rm sumtmp-*
-fi

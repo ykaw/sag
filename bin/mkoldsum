@@ -6,16 +6,12 @@ span_net=7
 span_mem=7
  span_df=28
 
-if [ -r $HOME/.sag/conf/mkoldsum_span.sh ]
-then
-    . $HOME/.sag/conf/mkoldsum_span.sh
-fi
+[ -r $HOME/.sag/conf/mkoldsum_span.sh ] && . $HOME/.sag/conf/mkoldsum_span.sh
+cd $HOME/.sag/var || exit
 
-if cd $HOME/.sag/var
-then
-    cat `ls -1r rl0001-* | tail -$span_la`  | ../plot/gen0001la.pl  >sumold-0001la
-    cat `ls -1r rl0001-* | tail -$span_ps`  | ../plot/gen0001ps.pl  >sumold-0001ps
-    cat `ls -1r rl0001-* | tail -$span_net` | ../plot/gen0001net.pl >sumold-0001net
-    cat `ls -1r rl0005-* | tail -$span_mem` | ../plot/gen0005mem.pl >sumold-0005mem
-    cat `ls -1r rl0100-* | tail -$span_df`  | ../plot/gen0100df.pl  >sumold-0100df
-fi
+for target in 0001la 0001ps 0001net 0005mem 0100df
+do
+    spantype=\$span_${target#????}
+    span=`eval echo $spantype`
+    cat `ls -1r rl${target%%[a-z]*}-?? | tail -$span` | ../plot/gen${target}.pl >sumold-$target
+done

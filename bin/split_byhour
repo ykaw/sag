@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+
+#
+#  split_byhour  -  Split a file in two by time-change-border
+#
+#  $Id: split_byhour,v 1.1 2004/05/17 01:34:23 cvs Exp $
+
+# Uncomment default input stream
+#
+sub uncomment_def_input {
+    chop;
+    s/#.*//;
+    s/^\s*//;
+    s/\s*$//;
+    return($_); # returns non comment part
+}
+
+# main runs here
+#
+(@ARGV == 2) || die "Usage: $0 Old_FileName New_FileName\n";
+
+$old_fname = shift @ARGV;
+open(OFILE,">$old_fname") || die "Can\'t Open: $old_fname\n";
+
+$new_fname = shift @ARGV;
+open(NFILE,">$new_fname") || die "Can\'t Open: $new_fname\n";
+
+# output to yesterday's cache file
+#
+while (<>) {
+    next unless &uncomment_def_input;
+    @F = split;
+    if ($F[0] eq '=dt') {
+	$the_dayhour = join(' ', @F[1..3]);
+	if (($the_dayhour ne $prev_dayhour) && $prev_dayhour) {
+	    print $_, "\n";
+	    close(NFILE);
+	    last;
+	}
+	$prev_dayhour = $the_dayhour;
+    }
+    print OFILE $_,"\n";
+}
+
+# output to today's non-appended log
+#
+while (<>) {
+    next unless &uncomment_def_input;
+    print OFILE $_,"\n";
+}
+close(OFILE);

@@ -10,7 +10,7 @@ set ylabel "THRUPUT [kbps]"
 set yrange [1:]
 set logscale y
 
-set data style lines
+set data style steps
 set grid
 set key top left
 

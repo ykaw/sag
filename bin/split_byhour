@@ -3,7 +3,7 @@
 #
 #  split_byhour  -  Split a file in two by time-change-border
 #
-#  $Id: split_byhour,v 1.4 2004/05/19 15:12:49 cvs Exp $
+#  $Id: split_byhour,v 1.5 2004/05/19 15:53:31 cvs Exp $
 
 # Uncomment default input stream
 #
@@ -33,8 +33,8 @@ while (<>) {
     if ($F[0] eq '=dt') {
 	$the_dayhour = join(' ', @F[1..3]);
 	if (($the_dayhour ne $prev_dayhour) && $prev_dayhour) {
-	    print OFILE $_, "\n";
 	    close(OFILE);
+	    print NFILE $_, "\n";
 	    last;
 	}
 	$prev_dayhour = $the_dayhour;

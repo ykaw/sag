@@ -1,0 +1,103 @@
+Only in sag: CVS
+Only in sag/bin: CVS
+diff -ru sag/bin/fnrot sag-cobalt/bin/fnrot
+--- sag/bin/fnrot	Tue Dec  5 10:08:56 2000
++++ sag-cobalt/bin/fnrot	Thu Dec  7 12:24:53 2000
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ 
+ if (scalar(@ARGV) < 2) {
+     die "Usage: $0 rot-n filename-template [filename-template ...]\n";
+Only in sag-cobalt/bin: gnuplot
+Only in sag-cobalt/bin: ppmtogif
+diff -ru sag/bin/t0001 sag-cobalt/bin/t0001
+--- sag/bin/t0001	Thu Nov 30 17:13:57 2000
++++ sag-cobalt/bin/t0001	Thu Feb 13 01:23:46 2003
+@@ -2,4 +2,6 @@
+  echo =la `cat /proc/loadavg`
+  echo =net
+  grep eth /proc/net/dev | tr -s ' '
++ set `grep temp /proc/cpuinfo`
++ echo =temp  $3
+  echo =end) >> var/rl0001
+diff -ru sag/bin/t0005 sag-cobalt/bin/t0005
+--- sag/bin/t0005	Thu Nov 30 17:13:57 2000
++++ sag-cobalt/bin/t0005	Mon Jul  7 18:18:42 2003
+@@ -1,4 +1,6 @@
+ (echo =dt $DAYTIME
+  echo =mem
+  cat /proc/meminfo
++ echo =fan
++ cat /proc/faninfo
+  echo =end) >> var/rl0005
+diff -ru sag/bin/t0100 sag-cobalt/bin/t0100
+--- sag/bin/t0100	Mon Mar  5 22:15:41 2001
++++ sag-cobalt/bin/t0100	Thu Nov 30 17:13:57 2000
+@@ -1,5 +1,5 @@
+ (echo =dt $DAYTIME
+  echo =df
+- df -x nfs
++ df
+  echo =end) >> var/rl0100
+ $HOME/.sag/bin/gengraph
+diff -ru sag/bin/tick sag-cobalt/bin/tick
+--- sag/bin/tick	Fri Dec  8 08:39:59 2000
++++ sag-cobalt/bin/tick	Thu Dec  7 14:34:30 2000
+@@ -2,16 +2,15 @@
+ 
+ cd $HOME/.sag || exit 1
+ 
+-  cmds='/usr/bin/nice /bin/sh -c'
+-cmdseq='/bin/sh bin/t0001'
++cmdseq='/bin/nice /bin/sh bin/t0001'
+ for sh in bin/t[0-9][0-9][0-9][0-9]
+ do
+     if [ -x $sh ]
+     then
+-        cmdseq="$cmdseq; /bin/sh $sh"
++        cmdseq="$cmdseq; /bin/nice /bin/sh $sh"
+         chmod a-x $sh
+     fi
+ done
+ 
+ export DAYTIME=`date '+%Y %m %d %H %M'`
+-eval $cmds "\"$cmdseq\"" &
++eval $cmdseq&
+Only in sag/conf: CVS
+Only in sag-cobalt/conf: crontab
+diff -ru sag/conf/crontab.sample sag-cobalt/conf/crontab.sample
+--- sag/conf/crontab.sample	Fri Dec  8 08:39:59 2000
++++ sag-cobalt/conf/crontab.sample	Thu Dec  7 11:27:26 2000
+@@ -1,6 +1,6 @@
+ # ### for System Activity Grapher logging system ###
+ #
+-* * * * * exec $HOME/.sag/bin/tick
++* * * * * $HOME/.sag/bin/tick
+ */5 * * * * chmod u+x $HOME/.sag/bin/t0005
+ 55 * * * * chmod u+x $HOME/.sag/bin/t0100
+ 30 0 * * * chmod u+x $HOME/.sag/bin/t2400
+Only in sag-cobalt/conf: dfplot.gp
+Only in sag-cobalt/conf: fanplot.gp
+Only in sag-cobalt/conf: netdev.pl
+Only in sag-cobalt/conf: shconf.sh
+Only in sag-cobalt: gnuplot
+Only in sag/plot: CVS
+diff -ru sag/plot/gen0001net.gp sag-cobalt/plot/gen0001net.gp
+--- sag/plot/gen0001net.gp	Thu Dec  7 09:53:03 2000
++++ sag-cobalt/plot/gen0001net.gp	Tue Jul  8 07:45:21 2003
+@@ -10,7 +10,8 @@
+ set yrange [1:]
+ set logscale y
+ 
+-set data style steps
++# set data style steps
++set data style lines
+ set grid
+ set key top left
+ 
+Only in sag-cobalt/plot: gen0001temp.gp
+Only in sag-cobalt/plot: gen0001temp.pl
+Only in sag-cobalt/plot: gen0005fan.gp
+Only in sag-cobalt/plot: gen0005fan.pl
+Only in sag/var: CVS

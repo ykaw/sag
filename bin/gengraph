@@ -3,7 +3,7 @@
 #
 #  gengraph  -  GENerate GRAPHhics data
 #
-#  $Id: gengraph,v 1.7 2004/05/17 01:21:52 cvs Exp $
+#  $Id: gengraph,v 1.8 2004/05/28 13:17:39 cvs Exp $
 
 cd $HOME/.sag/var || exit 1
 [ -r $HOME/.sag/conf/shconf.sh ] || exit 1
@@ -11,7 +11,7 @@ cd $HOME/.sag/var || exit 1
 
 for target in $targets
 do
-    (cat sumold-$target;  ../plot/gen$target.pl rl${target%%[a-z]*}) > sumtmp-$target
+    (cat sumold-$target;  ../plot/gen$target.pl rl${target%%[a-z]*}{-00,}) > sumtmp-$target
     ../bin/gnuplot ../plot/gen$target.gp
 
     # Uncomment if not needed any more

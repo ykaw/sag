@@ -15,7 +15,7 @@ while ($fn_templ = shift(@ARGV)) {
 	$fnt_prev = sprintf($fn_templ, $i-1);
 	$fnt_cur  = sprintf($fn_templ, $i);
 	if ( -f $fnt_prev ) {
-	    rename $fnt_prev, $fnt_cur;
+	    rename($fnt_prev, $fnt_cur);
 	}
     }
 }

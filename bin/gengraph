@@ -14,7 +14,5 @@ then
     ../bin/gnuplot ../plot/gen0005mem.gp
     ../bin/gnuplot ../plot/gen0100df.gp
 
-    # sleep 60
-    # cp *.gif $HOME/public_html
-    # rm tmp*
+    # rm sumtmp-*
 fi

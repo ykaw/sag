@@ -1,5 +1,12 @@
 #!/bin/sh
 
+rotate_max=30
+
+if [ -r $HOME/.sag/conf/rorate_max.sh.sh ]
+then
+    . $HOME/.sag/conf/rorate_max.sh.sh
+fi
+
 if cd $HOME/.sag/var
 then
     ../bin/fnrot 30 rl0001 rl0005 rl0100

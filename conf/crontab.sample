@@ -2,5 +2,5 @@
 #
 * * * * * $HOME/.sag/bin/tick
 */5 * * * * chmod u+x $HOME/.sag/bin/t0005
-0 * * * * chmod u+x $HOME/.sag/bin/t0100
-30 2 * * * chmod u+x $HOME/.sag/bin/t2400
+55 * * * * chmod u+x $HOME/.sag/bin/t0100
+30 0 * * * chmod u+x $HOME/.sag/bin/t2400

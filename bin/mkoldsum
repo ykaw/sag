@@ -13,5 +13,5 @@ for target in 0001la 0001ps 0001net 0005mem 0100df
 do
     spantype=\$span_${target#????}
     span=`eval echo $spantype`
-    cat `ls -1r rl${target%%[a-z]*}-?? | tail -$span` | ../plot/gen${target}.pl >sumold-$target
+    gzip -dc `ls -1r rl${target%%[a-z]*}-??.gz | tail -$span` | ../plot/gen${target}.pl >sumold-$target
 done

@@ -1,11 +1,15 @@
 #!/bin/sh
 
 rotate_max=30
-[ -r $HOME/.sag/conf/rorate_max.sh.sh ] && . $HOME/.sag/conf/rorate_max.sh.sh
+[ -r $HOME/.sag/conf/rorate_max.sh ] && . $HOME/.sag/conf/rorate_max.sh
 
 if cd $HOME/.sag/var
 then
-    ../bin/fnrot 30 rl0001 rl0005 rl0100
-    touch ../var/rl0001 ../var/rl0005 ../var/rl0100
+    ../bin/fnrot $rorate_max rl0001-%02d.gz rl0005-%02d.gz rl0100-%02d.gz
+    mv rl0001 rl0001-01
+    mv rl0005 rl0005-01
+    mv rl0100 rl0100-01
+    touch rl0001 rl0005 rl0100
+    gzip -9 rl0001-01 rl0005-01 rl0100-01
     ../bin/mkoldsum
 fi

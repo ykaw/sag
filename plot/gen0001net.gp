@@ -17,7 +17,7 @@ set key top left
 set terminal pbm color
 set output "|../bin/ppmtogif >0001net.gif 2>/dev/null"
 
-plot "tmp0001net" using 1:5 title "RX MAX", \
-     "tmp0001net" using 1:4 title "RX AVG", \
-     "tmp0001net" using 1:8 title "TX MAX", \
-     "tmp0001net" using 1:7 title "TX AVG"
+plot "sumtmp-0001net" using 1:5 title "RX MAX", \
+     "sumtmp-0001net" using 1:4 title "RX AVG", \
+     "sumtmp-0001net" using 1:8 title "TX MAX", \
+     "sumtmp-0001net" using 1:7 title "TX AVG"

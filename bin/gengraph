@@ -2,11 +2,11 @@
 
 if cd $HOME/.sag/var
 then
-    cat `ls -1r rl0001* | tail -14` | ../plot/gen0001la.pl  >tmp0001la
-    cat `ls -1r rl0001* | tail -14` | ../plot/gen0001ps.pl  >tmp0001ps
-    cat `ls -1r rl0001* | tail  -7` | ../plot/gen0001net.pl >tmp0001net
-    cat `ls -1r rl0005* | tail  -7` | ../plot/gen0005mem.pl >tmp0005mem
-    cat `ls -1r rl0100* | tail -28` | ../plot/gen0100df.pl  >tmp0100df
+    (cat sumold-0001la;  ../plot/gen0001la.pl  rl0001) >sumtmp-0001la
+    (cat sumold-0001ps;  ../plot/gen0001ps.pl  rl0001) >sumtmp-0001ps
+    (cat sumold-0001net; ../plot/gen0001net.pl rl0001) >sumtmp-0001net
+    (cat sumold-0005mem; ../plot/gen0005mem.pl rl0005) >sumtmp-0005mem
+    (cat sumold-0100df;  ../plot/gen0100df.pl  rl0100) >sumtmp-0100df
 
     ../bin/gnuplot ../plot/gen0001la.gp
     ../bin/gnuplot ../plot/gen0001ps.gp

@@ -13,7 +13,7 @@ set key bottom left
 set terminal pbm color
 set output "|../bin/ppmtogif >0005mem.gif 2>/dev/null"
 
-plot "tmp0005mem" using 1:3 title "CACHE", \
-     "tmp0005mem" using 1:4 title "BUFF", \
-     "tmp0005mem" using 1:5 title "RSS", \
-     "tmp0005mem" using 1:6 title "SWAP"
+plot "sumtmp-0005mem" using 1:3 title "CACHE", \
+     "sumtmp-0005mem" using 1:4 title "BUFF", \
+     "sumtmp-0005mem" using 1:5 title "RSS", \
+     "sumtmp-0005mem" using 1:6 title "SWAP"

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+ span_la=14
+ span_ps=14
+span_net=7
+span_mem=7
+ span_df=28
+
+if [ -r $HOME/.sag/conf/mkoldsum_span.sh ]
+then
+    . $HOME/.sag/conf/mkoldsum_span.sh
+fi
+
+if cd $HOME/.sag/var
+then
+    cat `ls -1r rl0001-* | tail -$span_la`  | ../plot/gen0001la.pl  >sumold-0001la
+    cat `ls -1r rl0001-* | tail -$span_ps`  | ../plot/gen0001ps.pl  >sumold-0001ps
+    cat `ls -1r rl0001-* | tail -$span_net` | ../plot/gen0001net.pl >sumold-0001net
+    cat `ls -1r rl0005-* | tail -$span_mem` | ../plot/gen0005mem.pl >sumold-0005mem
+    cat `ls -1r rl0100-* | tail -$span_df`  | ../plot/gen0100df.pl  >sumold-0100df
+fi

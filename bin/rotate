@@ -1,3 +1,8 @@
 #!/bin/sh
 
-cd $HOME/.sag/var && ../bin/fnrot 30 rl0001 rl0005 rl0100
+if cd $HOME/.sag/var
+then
+    ../bin/fnrot 30 rl0001 rl0005 rl0100
+    touch ../var/rl0001 ../var/rl0005 ../var/rl0100
+    ../bin/mkoldsum
+fi

@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+require '../conf/netdev.pl' || die;
+
 $TOOMAX = 999999999999;
 $TOOMIN = -1;
 
@@ -67,11 +69,11 @@ while (<>) {
     } elsif ($F[0] eq '=end') {
 	$indata = 0;
     } elsif ($indata) {
-	if ($F[0] =~ '^eth0:') {
-	    if ($F[0] eq 'eth0:') {
+	if ($F[0] =~ m/^${IFACE}:/o) {
+	    if ($F[0] eq "${IFACE}:") {
 		shift(@F);
 	    } else {
-		$F[0] =~ s/^eth0://;
+		$F[0] =~ s/^${IFACE}://o;
 	    }
 	    &update($dt, $F[0], $F[8]);
         }

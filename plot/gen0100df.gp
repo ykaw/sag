@@ -13,8 +13,4 @@ set key bottom left
 set terminal pbm color
 set output "|../bin/ppmtogif >0100df.gif 2>/dev/null"
 
-plot "tmp0100df" using 1:3, \
-     "tmp0100df" using 1:4, \
-     "tmp0100df" using 1:5, \
-     "tmp0100df" using 1:6, \
-     "tmp0100df" using 1:7
+load "../conf/dfplot.gp"

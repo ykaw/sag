@@ -13,6 +13,6 @@ set key top left
 set terminal pbm color
 set output "|../bin/ppmtogif >0001ps.gif 2>/dev/null"
 
-plot "tmp0001ps" using 1:5 title "MAX", \
-     "tmp0001ps" using 1:4 title "AVG", \
-     "tmp0001ps" using 1:3 title "MIN"
+plot "sumtmp-0001ps" using 1:5 title "MAX", \
+     "sumtmp-0001ps" using 1:4 title "AVG", \
+     "sumtmp-0001ps" using 1:3 title "MIN"

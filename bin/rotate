@@ -5,7 +5,7 @@ rotate_max=30
 
 if cd $HOME/.sag/var
 then
-    ../bin/fnrot $rotate_max rl0001-\%02d.gz rl0005-\%02d.gz rl0100-\%02d.gz
+    ../bin/fnrot $rotate_max rl0001-%02d.gz rl0005-%02d.gz rl0100-%02d.gz
     mv rl0001 rl0001-01
     mv rl0005 rl0005-01
     mv rl0100 rl0100-01

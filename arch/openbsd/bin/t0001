@@ -1,0 +1,5 @@
+(echo =dt $DAYTIME
+ echo =la `cat /kern/loadavg`
+ echo =net
+ set `netstat -I tun0 -b -n -i`; echo $7 ${10} ${11}
+ echo =end) >> var/rl0001

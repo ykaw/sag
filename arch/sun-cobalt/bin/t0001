@@ -1,0 +1,7 @@
+(echo =dt $DAYTIME
+ echo =la `cat /proc/loadavg`
+ echo =net
+ grep eth /proc/net/dev | tr -s ' '
+ set `grep temp /proc/cpuinfo`
+ echo =temp  $3
+ echo =end) >> var/rl0001

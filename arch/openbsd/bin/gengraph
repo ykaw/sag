@@ -1,0 +1,13 @@
+#!/bin/sh
+
+cd $HOME/.sag/var || exit 1
+[ -r $HOME/.sag/conf/shconf.sh ] || exit 1
+. $HOME/.sag/conf/shconf.sh
+
+for target in $targets
+do
+    (cat sumold-$target;  ../plot/gen$target.pl rl${target%%[a-z]*}) > sumtmp-$target
+    ../bin/gnuplot ../plot/gen$target.gp
+    # rm sumtmp-$target
+done
+

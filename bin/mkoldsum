@@ -1,5 +1,10 @@
 #!/bin/sh
 
+#
+#  mkoldsum  -  make ``sumold-*'' data summary cache
+#
+#  $Id: mkoldsum,v 1.5 2004/05/17 01:21:52 cvs Exp $
+
 cd $HOME/.sag/var || exit 1
 [ -r $HOME/.sag/conf/shconf.sh ] || exit 1
 . $HOME/.sag/conf/shconf.sh
@@ -8,5 +13,5 @@ for target in $targets
 do
     spantype=\$span_${target#????}
     span=`eval echo $spantype`
-    gzip -dc `ls -1r rl${target%%[a-z]*}-??.gz | tail -$span` | ../plot/gen${target}.pl >sumold-$target
+    (gzip -dc `ls -1r rl${target%%[a-z]*}-??.gz | tail -$span`; cat rl${target%%[a-z]*}_tdy) | ../plot/gen${target}.pl >sumold-$target
 done

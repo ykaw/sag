@@ -1,3 +1,8 @@
+#
+#  t0001  -  executing every minute
+#
+#  $Id: t0001,v 1.2 2004/05/17 01:21:52 cvs Exp $
+
 (echo =dt $DAYTIME
  echo =la `cat /proc/loadavg`
  echo =net

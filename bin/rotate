@@ -1,23 +1,22 @@
 #!/bin/sh
 
+#
+#  rorate  -  Re-archiving files and split raw data file
+#
+#  $Id: rotate,v 1.10 2004/05/17 01:21:52 cvs Exp $
+
 cd $HOME/.sag/var || exit 1
 [ -r $HOME/.sag/conf/shconf.sh ] || exit 1
 . $HOME/.sag/conf/shconf.sh
 
-../bin/fnrot $rotate_max rl0001-%02d.gz rl0005-%02d.gz rl0100-%02d.gz
+for period in `echo $targets | tr -sc 0-9 '\012' | sort | uniq`; do
+    ../bin/fnrot $rotate_max rl${period}-%02d.gz
+    if [ -f rl${period}_tdy ]; then
+	mv -f rl${period}_tdy rl${period}_ydy
+    fi
+    touch rl${period}
+    cat rl${period}_ydy | ../bin/split_byhour rl${period}-01 rl${period}_tdy
+    gzip -9 rl${period}-01
+done
 
-mv rl0001 rl0001b
-mv rl0005 rl0005b
-mv rl0100 rl0100b
-touch rl0001 rl0005 rl0100
-
-cat rl0001a rl0001b > rl0001c
-cat rl0005a rl0005b > rl0005c
-cat rl0100a rl0100b > rl0100c
-cat rl0001c | ../bin/split.pl rl0001-01 rl0001a
-cat rl0005c | ../bin/split.pl rl0005-01 rl0005a
-cat rl0100c | ../bin/split.pl rl0100-01 rl0100a
-rm rl????[bc]
-
-gzip -9 rl0001-01 rl0005-01 rl0100-01
 ../bin/mkoldsum

@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+
+if (scalar(@ARGV) < 2) {
+    die "Usage: $0 rot-n filename-template [filename-template ...]\n";
+}
+
+(($rot_n = 0 + shift(@ARGV)) < 1) && exit;
+
+while ($fn_templ = shift(@ARGV)) {
+    unless ($fn_templ =~ /%\d*d/) {
+	$fn_templ .= "-%02d";
+    }
+
+    for ($i = $rot_n; 1 <= $i; $i--) {
+	$fnt_prev = sprintf($fn_templ, $i-1);
+	$fnt_cur  = sprintf($fn_templ, $i);
+	if ( -f $fnt_prev ) {
+	    rename($fnt_prev, $fnt_cur);
+	}
+    }
+}

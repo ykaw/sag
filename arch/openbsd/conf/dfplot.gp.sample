@@ -1,0 +1,4 @@
+plot "sumtmp-0100df" using 1:3 title "/", \
+     "sumtmp-0100df" using 1:4 title "/usr", \
+     "sumtmp-0100df" using 1:5 title "/var", \
+     "sumtmp-0100df" using 1:6 title "/opt"

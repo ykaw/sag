@@ -1,0 +1,16 @@
+
+# category to process data
+#
+targets='0001la 0001ps 0001net 0005mem 0100df'
+
+# days to restore data
+#
+rotate_max=30
+
+# days to display graph
+#
+ span_la=7
+ span_ps=7
+span_net=7
+span_mem=2
+ span_df=14

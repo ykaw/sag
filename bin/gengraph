@@ -6,7 +6,7 @@ cd $HOME/.sag/var || exit 1
 
 for target in $targets
 do
-    (cat sumold-$target;  ../plot/gen$target.pl rl${target%%[a-z]*}) > sumtmp-$target
+    (cat sumold-$target;  ../plot/gen$target.pl rl${target%%[a-z]*}a rl${target%%[a-z]*}) > sumtmp-$target
     ../bin/gnuplot ../plot/gen$target.gp
     # rm sumtmp-$target
 done

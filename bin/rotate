@@ -5,9 +5,19 @@ cd $HOME/.sag/var || exit 1
 . $HOME/.sag/conf/shconf.sh
 
 ../bin/fnrot $rotate_max rl0001-%02d.gz rl0005-%02d.gz rl0100-%02d.gz
-mv rl0001 rl0001-01
-mv rl0005 rl0005-01
-mv rl0100 rl0100-01
+
+mv rl0001 rl0001b
+mv rl0005 rl0005b
+mv rl0100 rl0100b
 touch rl0001 rl0005 rl0100
+
+cat rl0001a rl0001b > rl0001c
+cat rl0005a rl0005b > rl0005c
+cat rl0100a rl0100b > rl0100c
+cat rl0001c | ../bin/split.pl rl0001-01 rl0001a
+cat rl0005c | ../bin/split.pl rl0005-01 rl0005a
+cat rl0100c | ../bin/split.pl rl0100-01 rl0100a
+rm rl????[bc]
+
 gzip -9 rl0001-01 rl0005-01 rl0100-01
 ../bin/mkoldsum

@@ -1,15 +1,10 @@
 #!/bin/sh
 
- span_la=14
- span_ps=14
-span_net=7
-span_mem=7
- span_df=28
+cd $HOME/.sag/var || exit 1
+[ -r $HOME/.sag/conf/shconf.sh ] || exit 1
+. $HOME/.sag/conf/shconf.sh
 
-[ -r $HOME/.sag/conf/mkoldsum_span.sh ] && . $HOME/.sag/conf/mkoldsum_span.sh
-cd $HOME/.sag/var || exit
-
-for target in 0001la 0001ps 0001net 0005mem 0100df
+for target in $targets
 do
     spantype=\$span_${target#????}
     span=`eval echo $spantype`

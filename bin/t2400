@@ -1,1 +1,6 @@
+#
+#  t2400  -  execute every day
+#
+#  $Id: t2400,v 1.2 2004/05/17 01:21:52 cvs Exp $
+
 $HOME/.sag/bin/rotate

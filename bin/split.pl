@@ -1,5 +1,10 @@
 #!/usr/bin/perl
 
+#
+#  split.pl  -  Split a file in two by time-change-border
+#
+#  $Id: split.pl,v 1.2 2004/05/17 01:21:52 cvs Exp $
+
 if (@ARGV != 2) {
     die "Usage: $0 Old_FileName New_FileName\n";
 }

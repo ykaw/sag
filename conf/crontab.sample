@@ -1,5 +1,7 @@
 # ### for System Activity Grapher logging system ###
 #
+# $Id: crontab.sample,v 1.4 2004/05/17 01:19:10 cvs Exp $
+#
 * * * * * exec $HOME/.sag/bin/tick
 */5 * * * * chmod u+x $HOME/.sag/bin/t0005
 55 * * * * chmod u+x $HOME/.sag/bin/t0100

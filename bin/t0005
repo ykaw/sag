@@ -1,0 +1,4 @@
+(echo =dt $DAYTIME
+ echo =mem
+ cat /proc/meminfo
+ echo =end) >> var/rl0005

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cd $HOME/.sag/var && ../bin/fnrot 30 rl0001 rl0005 rl0100

@@ -1,0 +1,5 @@
+(echo =dt $DAYTIME
+ echo =df
+ df
+ echo =end) >> var/rl0100
+$HOME/.sag/bin/gengraph

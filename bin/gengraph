@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if cd $HOME/.sag/var
+then
+    cat `ls -1r rl0001* | tail -14` | ../plot/gen0001la.pl  >tmp0001la
+    cat `ls -1r rl0001* | tail -14` | ../plot/gen0001ps.pl  >tmp0001ps
+    cat `ls -1r rl0001* | tail  -7` | ../plot/gen0001net.pl >tmp0001net
+    cat `ls -1r rl0005* | tail  -7` | ../plot/gen0005mem.pl >tmp0005mem
+    cat `ls -1r rl0100* | tail -28` | ../plot/gen0100df.pl  >tmp0100df
+
+    ../bin/gnuplot ../plot/gen0001la.gp
+    ../bin/gnuplot ../plot/gen0001ps.gp
+    ../bin/gnuplot ../plot/gen0001net.gp
+    ../bin/gnuplot ../plot/gen0005mem.gp
+    ../bin/gnuplot ../plot/gen0100df.gp
+
+    # sleep 60
+    # cp *.gif $HOME/public_html
+    # rm tmp*
+fi

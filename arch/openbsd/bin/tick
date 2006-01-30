@@ -13,4 +13,4 @@ do
 done
 
 export DAYTIME=`date '+%Y %m %d %H %M'`
-eval $cmdseq&
+eval $cmdseq &

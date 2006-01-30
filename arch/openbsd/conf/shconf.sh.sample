@@ -1,7 +1,10 @@
+#
+#  shconf.sh  -  shell variable configuration for SAG
+#
+#  $Id: shconf.sh.sample,v 1.2 2006/01/30 10:26:13 kaw Exp $
 
 # category to process data
 #
-#targets='0001la 0001ps 0001net 0005mem 0100df'
 targets='0001la 0001net 0005mem 0100df'
 
 # days to restore data

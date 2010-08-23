@@ -3,19 +3,19 @@
 #
 #  rorate  -  Re-archiving files and split raw data file
 #
-#  $Id: rotate,v 1.14 2004/05/20 05:21:43 cvs Exp $
+#  $Id: rotate,v 1.15 2010/08/23 12:36:49 kaw Exp $
 
 cd $HOME/.sag/var || exit 1
 [ -r $HOME/.sag/conf/shconf.sh ] || exit 1
 . $HOME/.sag/conf/shconf.sh
 
 for period in `echo $targets | tr -sc 0-9 '\012' | sort | uniq`; do
-    ../bin/fnrot $rotate_max rl${period}-%02d.gz
-    mv -f rl${period}-00 rl${period}_tmp1
+    ../bin/fnrot $rotate_max rl${period}-%03d.gz
+    mv -f rl${period}-000 rl${period}_tmp1
     mv -f rl${period}     rl${period}_tmp2
     touch rl${period}
-    cat rl${period}_tmp{1,2} | ../bin/split_byhour rl${period}-01 rl${period}-00
-    gzip -9 rl${period}-01
+    cat rl${period}_tmp{1,2} | ../bin/split_byday rl${period}-001 rl${period}-000
+    gzip -9 rl${period}-001
     rm -f rl${period}_tmp{1,2}
 done
 

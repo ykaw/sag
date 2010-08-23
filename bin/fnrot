@@ -3,7 +3,7 @@
 #
 #  fnrot  -  FileName ROTator
 #
-#  $Id: fnrot,v 1.4 2004/06/16 02:56:14 cvs Exp $
+#  $Id: fnrot,v 1.5 2010/08/23 12:36:49 kaw Exp $
 
 if (scalar(@ARGV) < 2) {
     die "Usage: $0 rot-n filename-template [filename-template ...]\n";
@@ -13,7 +13,7 @@ if (scalar(@ARGV) < 2) {
 
 while ($fn_templ = shift(@ARGV)) {
     unless ($fn_templ =~ /%\d*d/) {
-	$fn_templ .= "-%02d";
+	$fn_templ .= "-%03d";
     }
 
     for ($i = $rot_n; 1 <= $i; $i--) {

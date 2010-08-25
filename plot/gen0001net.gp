@@ -7,15 +7,16 @@ set format x "%m/%d\n%H:00"
 set xlabel "DATE"
 
 set ylabel "THRUPUT [kbps]"
-set yrange [1:]
+#set yrange [1:]
 set logscale y
 
-set data style steps
+# set data style steps
+set data style lines
 set grid
 set key top left
 
 set terminal pbm color
-set output "|../bin/ppmtogif >0001net.gif 2>/dev/null"
+set output "|../bin/pnminvert|../bin/ppmtogif >0001net.gif 2>/dev/null"
 
 plot "sumtmp-0001net" using 1:5 title "RX MAX", \
      "sumtmp-0001net" using 1:4 title "RX AVG", \

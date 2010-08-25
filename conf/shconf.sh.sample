@@ -1,11 +1,11 @@
 #
 #  shconf.sh  -  shell variable configuration for SAG
 #
-#  $Id: shconf.sh.sample,v 1.2 2004/05/17 01:19:10 cvs Exp $
+#  $Id: shconf.sh.sample,v 1.3 2010/08/25 16:45:44 kaw Exp $
 
 # category to process data
 #
-targets='0001la 0001ps 0001net 0005mem 0100df'
+targets='0001la 0001ps 0001net 0005mem 0100df 0100time'
 
 # days to restore data
 #
@@ -13,8 +13,9 @@ rotate_max=30
 
 # days to display graph
 #
- span_la=7
- span_ps=7
-span_net=7
-span_mem=2
- span_df=14
+  span_la=7
+  span_ps=7
+ span_net=7
+ span_mem=2
+  span_df=14
+span_time=14

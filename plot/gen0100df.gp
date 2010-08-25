@@ -11,6 +11,6 @@ set grid
 set key bottom left
 
 set terminal pbm color
-set output "|../bin/ppmtogif >0100df.gif 2>/dev/null"
+set output "|../bin/pnminvert|../bin/ppmtogif >0100df.gif 2>/dev/null"
 
 load "../conf/dfplot.gp"

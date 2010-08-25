@@ -11,9 +11,7 @@ set grid
 set key bottom left
 
 set terminal pbm color
-set output "|../bin/ppmtogif >0005mem.gif 2>/dev/null"
+set output "|../bin/pnminvert|../bin/ppmtogif >0005mem.gif 2>/dev/null"
 
-plot "sumtmp-0005mem" using 1:3 title "CACHE", \
-     "sumtmp-0005mem" using 1:4 title "BUFF", \
-     "sumtmp-0005mem" using 1:5 title "RSS", \
+plot "sumtmp-0005mem" using 1:3 title "MEM", \
      "sumtmp-0005mem" using 1:6 title "SWAP"

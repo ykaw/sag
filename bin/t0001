@@ -1,10 +1,10 @@
 #
 #  t0001  -  executing every minute
 #
-#  $Id: t0001,v 1.2 2004/05/17 01:21:52 cvs Exp $
+#  $Id: t0001,v 1.3 2010/08/25 16:45:44 kaw Exp $
 
 (echo =dt $DAYTIME
- echo =la `cat /proc/loadavg`
+ echo =la `sysctl -n vm.loadavg`
  echo =net
- grep eth /proc/net/dev | tr -s ' '
+ set `netstat -I ne0 -b -n -i`; echo $7 ${11} ${12}
  echo =end) >> var/rl0001

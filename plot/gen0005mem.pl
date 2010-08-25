@@ -15,13 +15,11 @@ while (<>) {
 	$indata = 1;
     } elsif ($F[0] eq '=end') {
 	printf("%s %.2f %.2f %.2f %.2f\n",
-	       $dt, $mem_use, $mem_buf, $mem_txt, $swp_use);
+	       $dt, $mem_use, 0, 0, $swp_use);
 	$indata = 0;
     } elsif ($indata) {
 	if ($F[0] eq 'Mem:') {
-	    $mem_use = 100*($F[1]-$F[3])/$F[1];
-	    $mem_buf = 100*($F[1]-$F[3]-$F[6])/$F[1];
-	    $mem_txt = 100*($F[1]-$F[3]-$F[6]-$F[5])/$F[1];
+	    $mem_use = 100*$F[2]/$F[1];
 	} elsif ($F[0] eq 'Swap:') {
 	    $swp_use = 100*$F[2]/$F[1];
 	}

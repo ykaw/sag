@@ -3,7 +3,7 @@
 #
 #  mkoldsum  -  make ``sumold-*'' data summary cache
 #
-#  $Id: mkoldsum,v 1.6 2004/05/19 02:28:12 cvs Exp $
+#  $Id: mkoldsum,v 1.7 2010/08/25 16:45:44 kaw Exp $
 
 cd $HOME/.sag/var || exit 1
 [ -r $HOME/.sag/conf/shconf.sh ] || exit 1
@@ -13,5 +13,5 @@ for target in $targets
 do
     spantype=\$span_${target#????}
     span=`eval echo $spantype`
-    gzip -dc `ls -1r rl${target%%[a-z]*}-??.gz | tail -$span` | ../plot/gen${target}.pl >sumold-$target
+    gzip -dc `ls -1r rl${target%%[a-z]*}-???.gz | tail -$span` | ../plot/gen${target}.pl >sumold-$target
 done

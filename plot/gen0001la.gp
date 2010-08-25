@@ -11,7 +11,7 @@ set grid
 set key top left
 
 set terminal pbm color
-set output "|../bin/ppmtogif >0001la.gif 2>/dev/null"
+set output "|../bin/pnminvert|../bin/ppmtogif >0001la.gif 2>/dev/null"
 
 plot "sumtmp-0001la" using 1:5 title "MAX", \
      "sumtmp-0001la" using 1:4 title "AVG", \

@@ -16,8 +16,10 @@ sub m2s {
 }
 
 sub sumprint {
-    printf("%s %.2f %.2f %.2f %.2f %.2f %.2f\n",
-	   $pdt, &m2s($rxmin/1000), &m2s($rxsum/$cnt/1000), &m2s($rxmax/1000), &m2s($txmin/1000), &m2s($txsum/$cnt/1000), &m2s($txmax/1000));
+    if ($cnt) {
+        printf("%s %.2f %.2f %.2f %.2f %.2f %.2f\n",
+	       $pdt, &m2s($rxmin/1000), &m2s($rxsum/$cnt/1000), &m2s($rxmax/1000), &m2s($txmin/1000), &m2s($txsum/$cnt/1000), &m2s($txmax/1000));
+    }
 }
 
 sub update {
@@ -69,14 +71,7 @@ while (<>) {
     } elsif ($F[0] eq '=end') {
 	$indata = 0;
     } elsif ($indata) {
-	if ($F[0] =~ m/^${IFACE}:/o) {
-	    if ($F[0] eq "${IFACE}:") {
-		shift(@F);
-	    } else {
-		$F[0] =~ s/^${IFACE}://o;
-	    }
-	    &update($dt, $F[0], $F[8]);
-        }
+	&update($dt, $F[1], $F[2]);
     }
 }
 &sumprint;

@@ -4,9 +4,9 @@ set xdata time
 set timefmt "%Y/%m/%d %H"
 set format x "%m/%d\n%H:00"
 
-# set yrange [0:100]
+set yrange [0:100]
 
-set data style lines
+set data style steps
 set grid
 set key bottom left
 

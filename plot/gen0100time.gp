@@ -6,12 +6,10 @@ set format x "%m/%d\n%H:00"
 
 # set yrange [0:100]
 
-set data style steps
 set grid
 set key bottom left
 
 set terminal pbm color
 set output "| ../bin/pnminvert | ../bin/ppmtogif >0100time.gif 2>/dev/null"
 
-#load "../conf/dfplot.gp"
-plot "sumtmp-0100time" using 1:3 title "freq. offset (ppm)"
+plot "sumtmp-0100time" using 1:3 title "freq. offset (ppm)" with steps

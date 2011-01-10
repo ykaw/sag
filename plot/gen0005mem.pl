@@ -21,7 +21,13 @@ while (<>) {
 	if ($F[0] eq 'Mem:') {
 	    $mem_use = 100*$F[2]/$F[1];
 	} elsif ($F[0] eq 'Swap:') {
-	    $swp_use = 100*$F[2]/$F[1];
+            if (0 < $F[1]) {
+	        $swp_use = 100*$F[2]/$F[1];
+            } else {
+	        $swp_use = 0;
+            }
 	}
+    } elsif ($F[0] eq '=gap') {
+	print "\n";
     }
 }

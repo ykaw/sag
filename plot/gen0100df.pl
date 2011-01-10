@@ -18,8 +18,10 @@ while (<>) {
 	printf("%s%s\n", $dt, $disk_use);
 	$indata = 0;
     } elsif ($indata) {
-	if ($F[0] =~ m|^/dev/|) {
+	if ($F[0] =~ /^(\/dev\/|mfs:[0-9])/) {
 	    $disk_use .= sprintf(" %.2f", 100*$F[2]/$F[1]);
 	}
+    } elsif ($F[0] eq '=gap') {
+	print "\n";
     }
 }

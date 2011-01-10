@@ -72,6 +72,9 @@ while (<>) {
 	$indata = 0;
     } elsif ($indata) {
 	&update($dt, $F[1], $F[2]);
+    } elsif ($F[0] eq '=gap') {
+        &sumprint;
+        print "\n";
     }
 }
 &sumprint;

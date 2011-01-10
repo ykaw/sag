@@ -35,6 +35,9 @@ while(<>){
     } elsif ($F[0] eq '=la'){
         $la = $F[1];
         &updatesum($dt, $la);
+    } elsif ($F[0] eq '=gap'){
+        &updatesum("", "");
+        print "\n";
     }
 }
 &updatesum("", "");

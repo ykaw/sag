@@ -53,6 +53,9 @@ while (<>) {
         $ps = $F[5];
 	&update($dt, $ps) if $dt;
 	$dt = "";
+    } elsif ($F[0] eq '=gap') {
+        &sumprint;
+        print "\n";
     }
 }
 &sumprint;

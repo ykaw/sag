@@ -1,5 +1,0 @@
-plot "sumtmp-0005fan" using 1:3 title "FAN1" \
-    ,"sumtmp-0005fan" using 1:4 title "FAN2" \
-    ,"sumtmp-0005fan" using 1:5 title "FAN3" \
-    ,"sumtmp-0005fan" using 1:6 title "FAN4" \
-    ,"sumtmp-0005fan" using 1:7 title "FAN5"

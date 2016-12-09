@@ -3,11 +3,11 @@
 #
 #  mkoldsum  -  make ``sumold-*'' data summary cache
 #
-#  $Id: mkoldsum,v 1.7 2010/08/25 16:45:44 kaw Exp $
+#  $Id: mkoldsum,v 1.8 2016/12/09 16:13:46 kaw Exp $
 
-cd $HOME/.sag/var || exit 1
-[ -r $HOME/.sag/conf/shconf.sh ] || exit 1
-. $HOME/.sag/conf/shconf.sh
+cd $SAGHOME/var || exit 1
+[ -r $SAGHOME/conf/shconf.sh ] || exit 1
+. $SAGHOME/conf/shconf.sh
 
 for target in $targets
 do

@@ -1,10 +1,10 @@
 #
 #  t0001  -  executing every minute
 #
-#  $Id: t0001,v 1.3 2010/08/25 16:45:44 kaw Exp $
+#  $Id: t0001,v 1.4 2016/12/09 16:13:46 kaw Exp $
 
 (echo =dt $DAYTIME
  echo =la `sysctl -n vm.loadavg`
  echo =net
- set `netstat -I ne0 -b -n -i`; echo $7 ${11} ${12}
+ set `netstat -I pppoe0 -b -n -i`; echo $7 ${10} ${11}
  echo =end) >> var/rl0001

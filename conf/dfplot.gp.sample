@@ -1,9 +1,0 @@
-#
-#  dfplot.gp  -  DiskFree partition description
-#
-#  $Id: dfplot.gp.sample,v 1.2 2004/05/17 01:19:10 cvs Exp $
-#
-plot "sumtmp-0100df" using 1:3 title "/"       \
-    ,"sumtmp-0100df" using 1:4 title "/usr"    \
-    ,"sumtmp-0100df" using 1:5 title "/home"   \
-    ,"sumtmp-0100df" using 1:6 title "/opt/1"

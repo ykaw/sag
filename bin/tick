@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd $HOME/.sag || exit 1
+cd $SAGHOME/ || exit 1
 
 cmdseq='/usr/bin/nice /bin/sh bin/t0001'
 for sh in bin/t[0-9][0-9][0-9][0-9]

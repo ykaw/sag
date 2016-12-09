@@ -10,7 +10,7 @@ while (<>) {
     next unless $_;
     @F = split;
     if ($F[0] eq '=dt') {
-        $dt = sprintf("%04d/%02d/%02d %02d", @F[1.. 4]);
+        $dt = sprintf("%04d/%02d/%02d %02d:%02d", @F[1.. 5]);
     } elsif ($F[0] eq '=df') {
 	$indata = 1;
         $disk_use = '';
@@ -18,7 +18,7 @@ while (<>) {
 	printf("%s%s\n", $dt, $disk_use);
 	$indata = 0;
     } elsif ($indata) {
-	if ($F[0] =~ /^(\/dev\/|mfs:[0-9])/) {
+	if ($F[0] =~ /^(\/dev\/|mfs:[0-9])|tmpfs/) {
 	    $disk_use .= sprintf(" %.2f", 100*$F[2]/$F[1]);
 	}
     } elsif ($F[0] eq '=gap') {

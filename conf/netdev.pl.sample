@@ -1,8 +1,0 @@
-#
-# netdev.pl  -  Network Interface Name
-#
-# $Id: netdev.pl.sample,v 1.2 2004/05/17 01:19:10 cvs Exp $
-#
-$IFACE='eth0';
-
-1;

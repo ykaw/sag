@@ -1,11 +1,14 @@
 #
 #  t0100  -  executing every hour
 #
-#  $Id: t0100,v 1.4 2010/08/25 16:45:44 kaw Exp $
+#  $Id: t0100,v 1.5 2016/12/09 16:13:46 kaw Exp $
 
 (echo =dt $DAYTIME
  echo =time `cat /var/db/ntpd.drift`
  echo =df
  df
  echo =end) >> var/rl0100
-$HOME/.sag/bin/gengraph
+$SAGHOME/bin/gengraph
+(sleep 180
+#cp $SAGHOME/var/*.svg /home/kaw/www/htdocs/sag/.
+ cp $SAGHOME/var/*.gif /home/kaw/www/htdocs/sag/.) &

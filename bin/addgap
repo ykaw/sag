@@ -1,7 +1,9 @@
 #!/bin/sh
 
-cd $HOME/.sag || exit 1
+export SAGHOME=/home/sag
 
-echo '=gap' >> $HOME/.sag/var/rl0001
-echo '=gap' >> $HOME/.sag/var/rl0005
-echo '=gap' >> $HOME/.sag/var/rl0100
+cd $SAGHOME || exit 1
+
+echo '=gap' >> $SAGHOME/var/rl0001
+echo '=gap' >> $SAGHOME/var/rl0005
+echo '=gap' >> $SAGHOME/var/rl0100

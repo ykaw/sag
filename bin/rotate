@@ -3,11 +3,11 @@
 #
 #  rorate  -  Re-archiving files and split raw data file
 #
-#  $Id: rotate,v 1.15 2010/08/23 12:36:49 kaw Exp $
+#  $Id: rotate,v 1.16 2016/12/09 16:13:46 kaw Exp $
 
-cd $HOME/.sag/var || exit 1
-[ -r $HOME/.sag/conf/shconf.sh ] || exit 1
-. $HOME/.sag/conf/shconf.sh
+cd $SAGHOME/var || exit 1
+[ -r $SAGHOME/conf/shconf.sh ] || exit 1
+. $SAGHOME/conf/shconf.sh
 
 for period in `echo $targets | tr -sc 0-9 '\012' | sort | uniq`; do
     ../bin/fnrot $rotate_max rl${period}-%03d.gz

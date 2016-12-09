@@ -1,7 +1,5 @@
 #!/usr/bin/perl
 
-require '../conf/netdev.pl' || die;
-
 $TOOMAX = 999999999999;
 $TOOMIN = -1;
 
@@ -65,7 +63,7 @@ while (<>) {
     next unless $_;
     @F = split;
     if ($F[0] eq '=dt') {
-        $dt = sprintf("%04d/%02d/%02d %02d", @F[1.. 4]);
+        $dt = sprintf("%04d/%02d/%02d %02d:00", @F[1.. 4]);
     } elsif ($F[0] eq '=net') {
 	$indata = 1;
     } elsif ($F[0] eq '=end') {

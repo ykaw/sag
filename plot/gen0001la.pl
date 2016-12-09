@@ -31,7 +31,7 @@ while(<>){
     next unless $_;
     @F = split;
     if ($F[0] eq '=dt') {
-        $dt = sprintf("%04d/%02d/%02d %02d", @F[1.. 4]);
+        $dt = sprintf("%04d/%02d/%02d %02d:00", @F[1.. 4]);
     } elsif ($F[0] eq '=la'){
         $la = $F[1];
         &updatesum($dt, $la);

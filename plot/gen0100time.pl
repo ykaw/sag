@@ -10,9 +10,9 @@ while (<>) {
     next unless $_;
     @F = split;
     if ($F[0] eq '=dt') {
-        $dt = sprintf("%04d/%02d/%02d %02d", @F[1.. 4]);
+        $dt = sprintf("%04d/%02d/%02d %02d:%02d", @F[1.. 5]);
     } elsif ($F[0] eq '=time') {
-	print "$dt ", 1000000 * $F[1], "\n";
+	print "$dt ", $F[1], "\n";
     } elsif ($F[0] eq '=gap') {
 	print "\n";
     }

@@ -1,16 +1,13 @@
-set title "MEMORY USAGE"
+load "../plot/common.gp"
 
-set xdata time
-set timefmt "%Y/%m/%d %H:%M"
-set format x "%m/%d\n%H:%M"
+set title "MEMORY UTILIZATION"
 
-set yrange [0:100]
+set ylabel "MEGABYTES"
 
-set grid
-set key bottom left
+set output output_fname("0005mem")
 
-set terminal pbm color
-set output "|../bin/pnminvert|../bin/ppmtogif >0005mem.gif 2>/dev/null"
-
-plot "sumtmp-0005mem" using 1:3 title "MEM"  with dots, \
-     "sumtmp-0005mem" using 1:6 title "SWAP" with dots
+plot "sumtmp-0005mem" using 1:($3/1048576) title "ACTIVE", \
+     "sumtmp-0005mem" using 1:($4/1048576) title "TOTAL",  \
+     "sumtmp-0005mem" using 1:($5/1048576) title "FREE",   \
+     "sumtmp-0005mem" using 1:($6/1048576) title "CACHE",  \
+     "sumtmp-0005mem" using 1:($7/1048576) title "SWAP"

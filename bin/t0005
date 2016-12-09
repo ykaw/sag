@@ -1,9 +1,16 @@
 #
 #  t0005  -  executing every 5 minutes
 #
-#  $Id: t0005,v 1.2 2004/05/17 01:21:52 cvs Exp $
+#  $Id: t0005,v 1.3 2016/12/09 16:13:46 kaw Exp $
 
 (echo =dt $DAYTIME
  echo =mem
- cat /proc/meminfo
- echo =end) >> var/rl0005
+ top -b 0
+ echo =end
+ if [ -r /tmp/ntpctl.out ]; then
+     echo =ntpctl
+     cat /tmp/ntpctl.out
+     echo =end
+ fi
+ echo =sensors `sysctl -n hw.sensors`
+ ) >> var/rl0005

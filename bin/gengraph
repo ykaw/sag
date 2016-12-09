@@ -3,11 +3,11 @@
 #
 #  gengraph  -  GENerate GRAPHhics data
 #
-#  $Id: gengraph,v 1.9 2010/08/23 12:36:49 kaw Exp $
+#  $Id: gengraph,v 1.10 2016/12/09 16:13:46 kaw Exp $
 
-cd $HOME/.sag/var || exit 1
-[ -r $HOME/.sag/conf/shconf.sh ] || exit 1
-. $HOME/.sag/conf/shconf.sh
+cd $SAGHOME/var || exit 1
+[ -r $SAGHOME/conf/shconf.sh ] || exit 1
+. $SAGHOME/conf/shconf.sh
 
 for target in $targets
 do

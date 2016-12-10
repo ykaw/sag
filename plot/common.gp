@@ -16,7 +16,7 @@ set grid
 #
 set xdata time
 set timefmt "%Y/%m/%d %H:%M"
-set format x "%Y\n%m/%d\n%H:%M"
+set format x "%H:%M\n%m/%d\n%Y"
 
 # settings for SVG output
 #

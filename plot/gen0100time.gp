@@ -6,4 +6,6 @@ set ylabel "PPM"
 
 set output output_fname("0100time")
 
-plot "sumtmp-0100time" using 1:3 title ""
+# for old ntp.drift
+#
+plot "sumtmp-0100time" using 1:(abs($3)<1 ? 1000000*$3 : $3) title ""

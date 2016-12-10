@@ -1,13 +1,13 @@
 #!/bin/sh
 
-cd $SAGHOME/ || exit 1
+cd $SAGHOME || exit 1
 
-cmdseq='/usr/bin/nice /bin/sh bin/t0001'
+cmdseq='/usr/bin/nice -n 15 /bin/sh bin/t0001'
 for sh in bin/t[0-9][0-9][0-9][0-9]
 do
     if [ -x $sh ]
     then
-        cmdseq="$cmdseq; /usr/bin/nice /bin/sh $sh"
+        cmdseq="$cmdseq; /usr/bin/nice -n 15 /bin/sh $sh"
         chmod a-x $sh
     fi
 done

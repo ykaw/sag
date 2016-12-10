@@ -1,27 +1,37 @@
+#
+# common.gp - common setttings for all gen*.gp
+#
+
+# plot settings
+#
+set style data points
+
+# frame settings
+#
+set lmargin 12
+set key top left
+set grid
+
+# x-axis is for date/time
+#
 set xdata time
 set timefmt "%Y/%m/%d %H:%M"
-set format x "%m/%d\n%H:%M"
-set xlabel ""
-set style data points
-set lmargin 12
+set format x "%Y\n%m/%d\n%H:%M"
 
 # settings for SVG output
 #
-# set rmargin 20
+# set terminal svg size 1000,500 background rgb "#000000"
 # set grid   linecolor rgb "white"
 # set border linecolor rgb "white"
-# set key top right out textcolor rgb "white"
-# set title  "" textcolor rgb "white"
-# set xlabel "" textcolor rgb "white"
-# set ylabel "" textcolor rgb "white"
-# set terminal svg size 1000,500 background rgb "#000000"
+# set key    textcolor rgb "white"
+# set title  textcolor rgb "white"
+# set xlabel textcolor rgb "white"
+# set ylabel textcolor rgb "white"
 # output_ext=".svg"
 # output_fname(f)=sprintf("%s%s", f, output_ext)
 
 # settings for GIF output
 #
-set grid
-set key top left
 set terminal pbm color
 output_ext=".gif"
 output_fname(fbase)=sprintf("|../bin/pnminvert|../bin/ppmtogif >%s%s 2>/dev/null", fbase, output_ext)

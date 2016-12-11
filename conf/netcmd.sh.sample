@@ -1,1 +1,0 @@
-netcmd='set `netstat -I pppoe0 -b -n -i`; echo $7 ${10} ${11}'

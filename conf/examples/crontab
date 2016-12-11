@@ -1,0 +1,15 @@
+# ### for System Activity Grapher logging system ###
+#
+# $Id: crontab,v 1.1 2016/12/11 11:18:54 kaw Exp $
+#
+#
+SHELL=/bin/sh
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+SAGHOME=/home/sag
+#
+#minute	hour	mday	month	wday	command
+#
+*	*	*	*	*	exec $SAGHOME/bin/tick
+*/5	*	*	*	*	chmod u+x $SAGHOME/bin/t0005
+50	*	*	*	*	chmod u+x $SAGHOME/bin/t0100
+10	4	*	*	*	chmod u+x $SAGHOME/bin/t2400

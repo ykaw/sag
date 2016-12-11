@@ -1,0 +1,7 @@
+# for System Activity Grapher
+#
+su -l sag -c 'PATH-TO-CMD/bin/addgap'
+#
+touch /tmp/ntpctl.out
+chown sag:sag /tmp/ntpctl.out
+chmod 0640 /tmp/ntpctl.out

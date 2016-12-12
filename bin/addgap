@@ -1,7 +1,6 @@
 #!/bin/sh
 
-export SAGHOME=/home/sag
-
+export SAGHOME=${0%/addgap}/..
 cd $SAGHOME || exit 1
 
 echo '=gap' >> $SAGHOME/var/rl0001

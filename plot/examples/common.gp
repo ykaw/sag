@@ -18,21 +18,41 @@ set xdata time
 set timefmt "%Y/%m/%d %H:%M"
 set format x "%H:%M\n%m/%d\n%Y"
 
-# settings for SVG output
+# color settings
 #
-set terminal svg size 1000,500 background rgb "#000000"
 set grid   linecolor rgb "white"
 set border linecolor rgb "white"
 set key    textcolor rgb "white"
 set title  textcolor rgb "white"
 set xlabel textcolor rgb "white"
 set ylabel textcolor rgb "white"
-output_ext=".svg"
+
+# default output filename format
+#
 output_fname(f)=sprintf("%s%s", f, output_ext)
 
-# settings for GIF output
-# (invert color spec by using NetPBM)
+#
+# settings for various graphic format
+#
+
+# SVG
+set terminal svg size 640,480 background rgb "black"
+output_ext=".svg"
+
+# # PNG
+# set terminal png size 640,480 background rgb "black" fontscale 0.7
+# output_ext=".png"
+
+# GIF
+# set terminal gif size 640,480 background rgb "black" fontscale 0.7
+# output_ext=".gif"
+
+# GIF (invert color spec by using NetPBM)
 #
 # set terminal pbm color
 # output_ext=".gif"
 # output_fname(fbase)=sprintf("|../bin/pnminvert|../bin/ppmtogif >%s%s 2>/dev/null", fbase, output_ext)
+
+# Text
+# set terminal dumb size 80,24
+# output_ext=".txt"

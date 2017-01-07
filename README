@@ -1,8 +1,10 @@
+======================================================================
 SAG - System Activity Grapher
 
       KAWMATA, Yoshihiro  -  kaw@on.rim.or.jp
 
-      $Id: README,v 1.1 2017/01/07 06:10:53 kaw Exp $
+      $Id: README,v 1.2 2017/01/07 06:13:28 kaw Exp $
+======================================================================
 
 
 LEGAL NOTICE
@@ -69,3 +71,4 @@ INSTALL PROCEDURE
    Edit $SAGHOME/plot/common , to choose file format of generated graphs.
 
 5. Activate SAG's crontab entry.
+======================================================================

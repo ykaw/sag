@@ -1,0 +1,71 @@
+SAG - System Activity Grapher
+
+      KAWMATA, Yoshihiro  -  kaw@on.rim.or.jp
+
+      $Id: README,v 1.1 2017/01/07 06:10:53 kaw Exp $
+
+
+LEGAL NOTICE
+
+     Copyright (c) 2006--2017 Yoshihiro Kawamata
+     All rights reserved.
+     
+     Redistribution and use in source and binary forms, with or without
+     modification, are permitted provided that the following conditions are
+     met:
+     
+       * Redistributions of source code must retain the above copyright
+         notice, this list of conditions and the following disclaimer.
+     
+       * Redistributions in binary form must reproduce the above copyright
+         notice, this list of conditions and the following disclaimer in
+         the documentation and/or other materials provided with the
+         distribution.
+     
+       * Neither the name of Yoshihiro Kawamata nor the names of its
+         contributors may be used to endorse or promote products derived
+         from this software without specific prior written permission.
+     
+     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+INTRODUTION
+
+SAG (System Activity Grapher) is a light weight system monitor
+consisting of sh, awk and perl scripts.
+
+This runs on OpenBSD operating system (for version 5.5 and later),
+and easy to port to other unix-like systems.
+
+
+INSTALL PROCEDURE
+
+0. Ensure (or newly make) a SAG's user/group account.
+   For security reasons, we don't recommend running SAG as a superuser (root).
+
+1. extract and locate the SAG package to an appropriate directory.
+   This directory will be set to an environment variable called 'SAGHOME' .
+   Ordinary, SAGHOME is recommended to be equivalent to the account's HOME.
+
+2. Make symlinks reffering to gnuplot (and netpbm's executables, if needed),
+   under $SAGHOME/bin .
+
+3. On $SAGHOME/conf/examples, reconfigure crontabs of root and the SAG acount.
+   Copy dfplot.gp, netcmd.sh, postgproc.sh and shconf.sh to $SAGHOME/conf ,
+   then edit those copied files to reconfigure parameters.
+   Add $SAGHOME/conf/examples/rc.local to /etc/rc.local .
+
+4. Copy all files except CVS from $SAGHOME/plot/examples to $SAGHOME/plot .
+   Edit $SAGHOME/plot/common , to choose file format of generated graphs.
+
+5. Activate SAG's crontab entry.

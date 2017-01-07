@@ -1,9 +1,8 @@
 #!/usr/bin/perl
 
-#
 #  fnrot  -  FileName ROTator
 #
-#  $Id: fnrot,v 1.5 2010/08/23 12:36:49 kaw Exp $
+#  $Id: fnrot,v 1.6 2017/01/07 06:10:54 kaw Exp $
 
 if (scalar(@ARGV) < 2) {
     die "Usage: $0 rot-n filename-template [filename-template ...]\n";

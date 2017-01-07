@@ -1,13 +1,12 @@
-#
 #  shconf.sh  -  shell variable configuration for SAG
 #
-#  $Id: shconf.sh,v 1.1 2016/12/11 11:18:54 kaw Exp $
+#  $Id: shconf.sh,v 1.2 2017/01/07 06:10:54 kaw Exp $
 
-# category to process data
+# categories to process data
 #
 targets='0001la 0001net 0005mem 0100df 0100time 0005timeofs'
 
-# days to restore data
+# days to store data
 #
 rotate_max=750
 

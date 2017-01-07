@@ -1,5 +1,9 @@
 #!/bin/sh
 
+#  tick  -  driver for t0001, t0005 ...
+#
+#  $Id: tick,v 1.6 2017/01/07 06:10:54 kaw Exp $
+
 cd $SAGHOME || exit 1
 
 cmdseq='/usr/bin/nice -n 15 /bin/sh bin/t0001'

@@ -1,6 +1,6 @@
-#
 # common.gp - common setttings for all gen*.gp
 #
+# $Id: common.gp,v 1.3 2017/01/07 06:10:54 kaw Exp $
 
 # plot settings
 #
@@ -34,6 +34,7 @@ output_fname(f)=sprintf("%s%s", f, output_ext)
 #
 # settings for various graphic format
 #
+# Choose one and make it uncommented.
 
 # SVG
 set terminal svg size 640,480 background rgb "black"

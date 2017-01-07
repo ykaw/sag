@@ -1,1 +1,7 @@
+# ### for System Activity Grapher logging system ###
+#
+# $Id: crontab-root,v 1.2 2017/01/07 06:10:54 kaw Exp $
+#
+# Add a following line to crontab of root.
+#
 4-59/5  *       *       *       *       ntpctl -s all > /tmp/ntpctl.out

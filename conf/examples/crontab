@@ -1,10 +1,14 @@
 # ### for System Activity Grapher logging system ###
 #
-# $Id: crontab,v 1.1 2016/12/11 11:18:54 kaw Exp $
+# $Id: crontab,v 1.2 2017/01/07 06:10:54 kaw Exp $
 #
 #
 SHELL=/bin/sh
 PATH=/bin:/sbin:/usr/bin:/usr/sbin
+#
+# Important - base directory of SAG
+# Reconfigure if needed.
+#
 SAGHOME=/home/sag
 #
 #minute	hour	mday	month	wday	command

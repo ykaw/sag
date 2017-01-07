@@ -1,9 +1,8 @@
 #!/bin/sh
 
-#
 #  rorate  -  Re-archiving files and split raw data file
 #
-#  $Id: rotate,v 1.16 2016/12/09 16:13:46 kaw Exp $
+#  $Id: rotate,v 1.17 2017/01/07 06:10:54 kaw Exp $
 
 cd $SAGHOME/var || exit 1
 [ -r $SAGHOME/conf/shconf.sh ] || exit 1

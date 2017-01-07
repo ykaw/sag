@@ -1,9 +1,8 @@
 #!/usr/bin/perl
 
+#  split_byday  -  Split a file in two by day-change-border
 #
-#  split_byhour  -  Split a file in two by time-change-border
-#
-#  $Id: split_byday,v 1.1 2010/08/23 12:36:49 kaw Exp $
+#  $Id: split_byday,v 1.2 2017/01/07 06:10:54 kaw Exp $
 
 use POSIX 'strftime';
 

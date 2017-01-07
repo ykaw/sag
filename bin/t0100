@@ -1,7 +1,6 @@
-#
 #  t0100  -  executing every hour
 #
-#  $Id: t0100,v 1.6 2016/12/11 11:18:54 kaw Exp $
+#  $Id: t0100,v 1.7 2017/01/07 06:10:54 kaw Exp $
 
 (echo =dt $DAYTIME
  echo =time `cat /var/db/ntpd.drift`

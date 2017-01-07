@@ -1,6 +1,11 @@
 # for System Activity Grapher
+# Add this to /etc/rc.local
 #
-su -l sag -c 'PATH-TO-CMD/bin/addgap'
+# $Id: rc.local,v 1.2 2017/01/07 06:10:54 kaw Exp $
+
+su -l sag -c 'PATH-TO-CMD/bin/addgap' # Rewrite to the real location.
+
+# setups for ntp monitoring
 #
 touch /tmp/ntpctl.out
 chown sag:sag /tmp/ntpctl.out

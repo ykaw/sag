@@ -1,9 +1,8 @@
 #!/bin/sh
 
+#  mkoldsum  -  build ``sumold-*'' data summary cache
 #
-#  mkoldsum  -  make ``sumold-*'' data summary cache
-#
-#  $Id: mkoldsum,v 1.9 2016/12/11 15:45:48 kaw Exp $
+#  $Id: mkoldsum,v 1.10 2017/01/07 06:10:54 kaw Exp $
 
 cd $SAGHOME/var || exit 1
 [ -r $SAGHOME/conf/shconf.sh ] || exit 1

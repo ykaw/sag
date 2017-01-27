@@ -2,6 +2,8 @@ load "../plot/common.gp"
 
 set title "LOAD AVERAGE"
 
+set yrange [0:]
+
 set output output_fname("0001la")
 
 plot "sumtmp-0001la" using 1:5 title "MAX/HR", \

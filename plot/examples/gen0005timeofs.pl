@@ -26,15 +26,9 @@ while (<>) {
   @F = split;
 
   if ($stat == $NOTNTP) {
-    if ($F[0] eq '=dt') {
-      $dt = sprintf("%04d/%02d/%02d %02d:%02d", @F[1.. 5]);
-    }
-    if ($F[0] eq '=gap') {
-      print "\n";
-    }
-    if ($F[0] eq '=ntpctl') {
-      $stat = $HDRFOUND;
-    }
+    if    ($F[0] eq '=dt')     { $dt = sprintf("%04d/%02d/%02d %02d:%02d", @F[1.. 5]) }
+    elsif ($F[0] eq '=gap')    { print "\n" }
+    elsif ($F[0] eq '=ntpctl') { $stat = $HDRFOUND }
   } else {
     if ($stat == $HDRFOUND) {
       if ($F[4] eq 'unsynced,') {
@@ -63,7 +57,6 @@ while (<>) {
         }
         $stat = $NOTNTP;
       }
-      ;
     }
   }
   # for debug

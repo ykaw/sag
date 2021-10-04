@@ -3,7 +3,7 @@
 # processes after generating graphs
 # This script will be called by $SAGHOME/bin/t0100
 #
-# $Id: postgproc.sh,v 1.2 2017/01/07 06:10:54 kaw Exp $
+# $Id: postgproc.sh,v 1.3 2021/10/04 15:26:38 kaw Exp $
 
 # To enable this,
 
@@ -14,4 +14,4 @@ exit 0
 #
 # # sample of post process
 # sleep 60
-# cp $SAGHOME/var/*.svg /var/www/htdocs/sag/.
+# cp $SAGHOME/var/*.png /var/www/htdocs/sag/.

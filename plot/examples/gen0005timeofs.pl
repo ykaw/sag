@@ -29,7 +29,8 @@ while (<>) {
       $stat = $HDRFOUND;
     }
   } elsif ($stat == $HDRFOUND) {
-    if ($F[4] eq 'unsynced,') {
+    if ($F[4] eq 'unsynced,' ||
+        $F[7] eq 'unsynced,' ) {
       $ofs = 0 + $F[8];
       $dly = 0;
       $jit = 0;

@@ -2,19 +2,25 @@
 
 #  fnrot  -  FileName ROTator
 #
-#  $Id: fnrot,v 1.6 2017/01/07 06:10:54 kaw Exp $
+#    rotate max-rotate series of files with name of every filename-template
+#
+#  $Id: fnrot,v 1.7 2021/10/05 14:26:45 kaw Exp $
 
 if (scalar(@ARGV) < 2) {
-    die "Usage: $0 rot-n filename-template [filename-template ...]\n";
+    die "Usage: $0 max-rotate filename-template [filename-template...]\n";
 }
 
 (($rot_n = 0 + shift(@ARGV)) < 1) && exit;
 
 while ($fn_templ = shift(@ARGV)) {
     unless ($fn_templ =~ /%\d*d/) {
+        # for illegal template, set default filename
+        #
 	$fn_templ .= "-%03d";
     }
 
+    # do rename with one filename-template
+    #
     for ($i = $rot_n; 1 <= $i; $i--) {
 	$fnt_prev = sprintf($fn_templ, $i-1);
 	$fnt_cur  = sprintf($fn_templ, $i);

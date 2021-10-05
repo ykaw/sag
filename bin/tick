@@ -2,9 +2,11 @@
 
 #  tick  -  driver for t0001, t0005 ...
 #
-#  $Id: tick,v 1.6 2017/01/07 06:10:54 kaw Exp $
+#  $Id: tick,v 1.7 2021/10/05 00:03:13 kaw Exp $
 
 cd $SAGHOME || exit 1
+
+sleep 10  # to exec after t[0-9][0-9][0-9][0-9]
 
 cmdseq='/usr/bin/nice -n 15 /bin/sh bin/t0001'
 for sh in bin/t[0-9][0-9][0-9][0-9]

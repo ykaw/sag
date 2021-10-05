@@ -2,7 +2,7 @@
 
 #  mkoldsum  -  build ``sumold-*'' data summary cache
 #
-#  $Id: mkoldsum,v 1.12 2021/10/05 14:55:54 kaw Exp $
+#  $Id: mkoldsum,v 1.13 2021/10/05 23:44:50 kaw Exp $
 
 cd $SAGHOME/var || exit 1
 
@@ -24,7 +24,7 @@ do
     elif [ -x ../plot/gen$target.awk ]; then
         sumcmd="../plot/gen${target}.awk"
     elif [ -x ../plot/gen$target.py ]; then
-        sumcmd="../plot/gen${target}.py
+        sumcmd="../plot/gen${target}.py"
     fi
 
     [ -z "$sumcmd" ] && continue

@@ -2,7 +2,7 @@
 
 #  gengraph  -  GENerate GRAPHhics data
 #
-#  $Id: gengraph,v 1.14 2021/10/05 14:26:45 kaw Exp $
+#  $Id: gengraph,v 1.15 2021/10/05 14:55:54 kaw Exp $
 
 cd $SAGHOME/var || exit 1
 [ -r $SAGHOME/conf/shconf.sh ] || exit 1
@@ -10,11 +10,22 @@ cd $SAGHOME/var || exit 1
 
 for target in $targets
 do
+    # search and set formatting filter
+    #
     unset sumcmd
-    [ -x ../plot/gen$target.pl ]  && sumcmd="../plot/gen$target.pl"
-    [ -x ../plot/gen$target.awk ] && sumcmd="../plot/gen$target.awk"
+    if [ -x ../plot/gen$target.pl ]; then
+         sumcmd="../plot/gen$target.pl"
+    elif[ -x ../plot/gen$target.awk ]; then
+        sumcmd="../plot/gen$target.awk"
+    elif[ -x ../plot/gen$target.py ]; then
+        sumcmd="../plot/gen$target.py"
+    fi
+
     [ -z "$sumcmd" ] && continue
 
+    # merge cache and today's data
+    # then generate graph
+    #
     (cat sumold-$target; $sumcmd rl${target%%[a-z]*}-000 rl${target%%[a-z]*}) > sumtmp-$target
     ../bin/gnuplot ../plot/gen$target.gp
 

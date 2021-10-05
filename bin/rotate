@@ -2,20 +2,20 @@
 
 #  rorate  -  Re-archiving files and split raw data file
 #
-#  $Id: rotate,v 1.17 2017/01/07 06:10:54 kaw Exp $
+#  $Id: rotate,v 1.18 2021/10/05 02:29:26 kaw Exp $
 
 cd $SAGHOME/var || exit 1
-[ -r $SAGHOME/conf/shconf.sh ] || exit 1
-. $SAGHOME/conf/shconf.sh
 
-for period in `echo $targets | tr -sc 0-9 '\012' | sort | uniq`; do
+. $SAGHOME/conf/shconf.sh || exit 1
+
+for period in $(echo $targets | tr -sc 0-9 '\012' | sort | uniq); do
     ../bin/fnrot $rotate_max rl${period}-%03d.gz
     mv -f rl${period}-000 rl${period}_tmp1
     mv -f rl${period}     rl${period}_tmp2
     touch rl${period}
-    cat rl${period}_tmp{1,2} | ../bin/split_byday rl${period}-001 rl${period}-000
+    cat rl${period}_tmp1 rl${period}_tmp1 | ../bin/split_byday rl${period}-001 rl${period}-000
     gzip -9 rl${period}-001
-    rm -f rl${period}_tmp{1,2}
+    rm -f rl${period}_tmp1 rl${period}_tmp2
 done
 
 ../bin/mkoldsum

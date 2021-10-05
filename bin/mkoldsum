@@ -2,7 +2,7 @@
 
 #  mkoldsum  -  build ``sumold-*'' data summary cache
 #
-#  $Id: mkoldsum,v 1.10 2017/01/07 06:10:54 kaw Exp $
+#  $Id: mkoldsum,v 1.11 2021/10/05 02:29:26 kaw Exp $
 
 cd $SAGHOME/var || exit 1
 [ -r $SAGHOME/conf/shconf.sh ] || exit 1
@@ -11,12 +11,18 @@ cd $SAGHOME/var || exit 1
 for target in $targets
 do
     spantype=\$span_${target#????}
-    span=`eval echo $spantype`
+    span=$(eval echo $spantype)
 
     unset sumcmd
-    [ -x ../plot/gen$target.pl ]  && sumcmd="../plot/gen${target}.pl"
-    [ -x ../plot/gen$target.awk ] && sumcmd="../plot/gen${target}.awk"
+    if [ -x ../plot/gen$target.pl ]; then
+        sumcmd="../plot/gen${target}.pl"
+    elif [ -x ../plot/gen$target.awk ]; then
+        sumcmd="../plot/gen${target}.awk"
+    elif [ -x ../plot/gen$target.py ]; then
+        sumcmd="../plot/gen${target}.py
+    fi
+
     [ -z "$sumcmd" ] && continue
 
-    gzip -dc `ls -1r rl${target%%[a-z]*}-???.gz | tail -$span` | $sumcmd >sumold-$target
+    gzip -dc $(ls -1r rl${target%%[a-z]*}-???.gz | tail -$span) | $sumcmd >sumold-$target
 done

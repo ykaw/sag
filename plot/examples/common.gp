@@ -1,6 +1,6 @@
 # common.gp - common setttings for all gen*.gp
 #
-# $Id: common.gp,v 1.4 2021/10/04 15:26:38 kaw Exp $
+# $Id: common.gp,v 1.5 2021/10/05 00:10:28 kaw Exp $
 
 # plot settings
 #
@@ -20,8 +20,8 @@ set format x "%H:%M\n%m/%d\n%Y"
 # color settings
 #
 set grid   linecolor rgb "#808080"
-set border linecolor rgb "white"
-set key    textcolor rgb "white"
+set border linecolor rgb "#c0c0c0"
+set key    textcolor rgb "#c0c0c0"
 set title  textcolor rgb "white"
 set xlabel textcolor rgb "white"
 set ylabel textcolor rgb "white"

@@ -1,9 +1,9 @@
 #  t0001  -  executing every minute
 #
-#  $Id: t0001,v 1.6 2017/01/07 06:10:54 kaw Exp $
+#  $Id: t0001,v 1.7 2021/10/05 02:29:26 kaw Exp $
 
 (echo =dt $DAYTIME
- echo =la `sysctl -n vm.loadavg`
+ echo =la $(sysctl -n vm.loadavg)
  . ./conf/netcmd.sh
  echo =net
  eval $netcmd

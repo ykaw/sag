@@ -2,7 +2,7 @@
 
 #  tick  -  driver for t0001, t0005 ...
 #
-#  $Id: tick,v 1.7 2021/10/05 00:03:13 kaw Exp $
+#  $Id: tick,v 1.8 2021/10/05 02:29:26 kaw Exp $
 
 cd $SAGHOME || exit 1
 
@@ -18,5 +18,5 @@ do
     fi
 done
 
-export DAYTIME=`date '+%Y %m %d %H %M'`
+export DAYTIME=$(date '+%Y %m %d %H %M')
 eval $cmdseq &

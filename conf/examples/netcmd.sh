@@ -3,6 +3,6 @@
 #
 # this command will eval-ed by $SAGHOME/bin/t0001
 #
-# $Id: netcmd.sh,v 1.2 2017/01/07 06:10:54 kaw Exp $
+# $Id: netcmd.sh,v 1.3 2021/10/05 02:29:26 kaw Exp $
 
-netcmd='set `netstat -I bce0 -b -n -i`; echo $7 ${11} ${12}'
+netcmd='set $(netstat -I bce0 -b -n -i); echo $7 ${11} ${12}'

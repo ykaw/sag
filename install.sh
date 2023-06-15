@@ -6,9 +6,13 @@
 ##
 ## Read the file INSTALL-{JP,EN}.md for more details
 ##
+## initially written by gonzalo (@x61sh at Twitter)
+##
 
 ## DEBUG
 #set -x
+set -x
+set -e
 
 ## Are we root?
 if test "$(whoami)" != root; then
@@ -25,43 +29,78 @@ error() {
 	exit 1
 }
 
+## constants
+     user=sag
+    group=$user
+  SAGHOME=/home/$user; export SAGHOME
+git_repos=https://github.com/ykaw/sag
+editor=${EDITOR:-/usr/bin/vi}  # set default editor to vi
+# export SAGHOME=/var/log/sag  # for debug
+
 ## Creation 'sag' usr
-useradd -m -G sag -s /bin/ksh sag
+useradd -m -G $group -s /bin/ksh -d $SAGHOME $user
 
+su - $user <<EOF
 ## Cloning sag code with sag usr
-su - sag -c "cd /home/sag && git clone https://github.com/ykaw/sag"
+if cd $SAGHOME; then
+    git clone $git_repos
 
-## Put the files in order
-su - sag -c "mv sag/.git sag/* ~ && rmdir sag"
-su - sag -c "ln -s /usr/local/bin/gnuplot ~/bin"
-su - sag -c "ls -l ~/bin"
-su - sag -c "cd ~/conf && cp examples/dfplot.gp examples/netcmd.sh examples/postgproc.sh examples/shconf.sh ."
+    ## Put the files in order
+    mv sag/.git sag/* $SAGHOME && rmdir sag
+    ln -s $(which gnuplot) $SAGHOME/bin
+    ls -l $SAGHOME/bin
+    cp $SAGHOME/conf/examples/dfplot.gp \
+       $SAGHOME/conf/examples/netcmd.sh \
+       $SAGHOME/conf/examples/postgproc.sh \
+       $SAGHOME/conf/examples/shconf.sh \
+       $SAGHOME/conf
+else
+    exit 1
+fi
+EOF
 
 ## Editing files
-df && \
-sleep 10 && \
-su - sag -c "cd ~/conf && $EDITOR dfplot.gp"
-su - sag -c "cd ~/conf && $EDITOR netcmd.sh"
-su - sag -c "cd ~/conf && $EDITOR shconf.sh"
+(cat <<EOF
+#
+# Edit the gnuplot configuration above to match the actual file system
+# layout shown below.
+#
+EOF
+ df -h | awk '1==NR{print "# gnuplot   | ", $0} 2<=NR{print "#", "using 1:"NR+1" | ", $0}' ) >> $SAGHOME/conf/dfplot.gp
+su - $user -c "$editor $SAGHOME/conf/dfplot.gp"
+su - $user -c "$editor $SAGHOME/conf/netcmd.sh"
+su - $user -c "$editor $SAGHOME/conf/shconf.sh"
 
+su - $user <<EOF
 ## Graph drawing related setup
-su - sag -c "cd ~/plot && cp examples/common.gp examples/gen* ."
-su - sag -c "mkdir ~/var"
+cp $SAGHOME/plot/examples/common.gp \
+   $SAGHOME/plot/examples/gen* \
+   $SAGHOME/plot
+mkdir $SAGHOME/var
+EOF
 
 ## As root now we setup the rest
-cd ~sag/conf/examples/
-crontab -l > crontab.orig
-cat crontab.orig crontab-root | crontab -
-cat rc.local >> /etc/rc.local
-$EDITOR /etc/rc.local
-crontab -u sag ~sag/conf/examples/crontab
+
+if ! crontab -l | fgrep -q 'ntpctl -s all'; then  # to avoid dupulicate append
+    (crontab -l; cat $SAGHOME/conf/examples/crontab-root) | crontab -
+fi
+
+if ! fgrep -q '# for System Activity Grapher' /etc/rc.local; then  # to avoid dupulicate append
+
+    cat $SAGHOME/conf/examples/rc.local >> /etc/rc.local
+    sed -i -e "s|PATH-TO-CMD/bin/addgap|$SAGHOME/bin/addgap|" /etc/rc.local
+fi
+
+crontab -u $user -r 2>/dev/null || true # to clear crontab if exists
+sed -e "s|^SAGHOME=.*|SAGHOME=$SAGHOME|" $SAGHOME/conf/examples/crontab | crontab -u $user -
+
+## Web related settings
 mkdir /var/www/htdocs/sag
-cp /home/sag/conf/examples/index.html /var/www/htdocs/sag
-chown -R sag:sag /var/www/htdocs/sag
+cp $SAGHOME/conf/examples/index.html /var/www/htdocs/sag
+chown -R ${user}:${group} /var/www/htdocs/sag
 
 ## As sag we finishing the last edits
-su - sag -c "$EDITOR ~/conf/postgproc.sh"
+su - $user -c "$editor $SAGHOME/conf/postgproc.sh"
 
 ## Warning about add httpd(8)
 printf "*** You need to add the entry on your httpd.conf(8) file ***\n"
-

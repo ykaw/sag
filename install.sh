@@ -11,7 +11,6 @@
 
 ## DEBUG
 #set -x
-set -x
 set -e
 
 ## Are we root?
@@ -36,6 +35,10 @@ error() {
 git_repos=https://github.com/ykaw/sag
 editor=${EDITOR:-/usr/bin/vi}  # set default editor to vi
 # export SAGHOME=/var/log/sag  # for debug
+
+## remove existing SAG user/group
+ userinfo -e $user  &&  userdel -r $user
+groupinfo -e $group && groupdel $group
 
 ## Creation 'sag' usr
 useradd -m -G $group -s /bin/ksh -d $SAGHOME $user
@@ -95,7 +98,7 @@ crontab -u $user -r 2>/dev/null || true # to clear crontab if exists
 sed -e "s|^SAGHOME=.*|SAGHOME=$SAGHOME|" $SAGHOME/conf/examples/crontab | crontab -u $user -
 
 ## Web related settings
-mkdir /var/www/htdocs/sag
+mkdir -p /var/www/htdocs/sag
 cp $SAGHOME/conf/examples/index.html /var/www/htdocs/sag
 chown -R ${user}:${group} /var/www/htdocs/sag
 

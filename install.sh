@@ -70,18 +70,44 @@ else
 fi
 EOF
 
-## Editing files
-(cat <<EOF
+## generate a template of dfplot.gp
+(df | awk '
+BEGIN { printf("plot") }
+2<=NR { printf(", \\\n    \"sumtmp-0100df\" using 1:%d title \"%s\"",
+               NR+1,
+               $6) }
+END { printf("\n") }'
+ cat <<EOF
 #
 # Edit the gnuplot configuration above to match the actual file system
 # layout shown below.
 #
+# You can rearrange or delete the configuration lines as you wish.
+#
 EOF
- df -h | awk '1==NR{print "# gnuplot   | ", $0} 2<=NR{print "#", "using 1:"NR+1" | ", $0}' ) >> $SAGHOME/conf/dfplot.gp
+ df -h | sed -e 's/^/# /' ) > $SAGHOME/conf/dfplot.gp
+                            # This redirection is for preserve file attributes.
 notice 5 "Edit dfplot.gp - specify disk partitions to plot, if necessary."
 su - $user -c "$editor $SAGHOME/conf/dfplot.gp"
 
 notice 5 "Edit netcmd.sh - specify the network interface to plot."
+## find appropriate network interface
+netdev=$(ifconfig -a | awk '
+BEGIN            { FS=":" }
+/^[a-z]/         { iface=$1 }
+/groups: egress/ { egress=iface }
+/mtu 1500/       { otherdev=iface }
+END { if (egress=="") {
+          print otherdev
+      } else {
+          print egress
+      }
+    }')
+echo netdev is $netdev
+if [[ -n "$netdev" ]]; then
+    # replace template to the device found
+    su - $user -c "sed -i -e 's/bce0/$netdev/' $SAGHOME/conf/netcmd.sh"
+fi
 su - $user -c "$editor $SAGHOME/conf/netcmd.sh"
 
 notice 5 "Edit shconf.sh - specify spans to archive logs and plot graphs."

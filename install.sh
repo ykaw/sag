@@ -73,7 +73,8 @@ EOF
 ## generate a template of dfplot.gp
 (df | awk '
 BEGIN { printf("plot") }
-2<=NR { printf(", \\\n    \"sumtmp-0100df\" using 1:%d title \"%s\"",
+3<=NR { printf(",") }
+2<=NR { printf(" \\\n    \"sumtmp-0100df\" using 1:%d title \"%s\"",
                NR+1,
                $6) }
 END { printf("\n") }'

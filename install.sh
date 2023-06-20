@@ -11,7 +11,17 @@
 
 ## DEBUG
 #set -x
+
 set -e
+
+## parameters
+     user='sag'
+    group="$user"
+  SAGHOME="/home/$user"; export SAGHOME
+git_repos='https://github.com/ykaw/sag'
+  tgz_url='https://fuguita.org/sag/sag.tar.gz'
+   editor="${EDITOR:-/usr/bin/vi}"  # set default editor to vi
+  install='tgz'  # git or tgz
 
 notice () {
     local wait=$1; shift
@@ -33,15 +43,13 @@ fi
 
 ## Need it software
 notice 0 "Installing dependencies from package"
-pkg_add git gnuplot--
-
-## constants
-     user=sag
-    group=$user
-  SAGHOME=/home/$user; export SAGHOME
-git_repos=https://github.com/ykaw/sag
-editor=${EDITOR:-/usr/bin/vi}  # set default editor to vi
-# export SAGHOME=/var/log/sag  # for debug
+if [[ "$install" = "git" ]]; then
+    pkg_add git gnuplot--
+elif [[ "$install" = "tgz" ]]; then
+    pkg_add gnuplot--
+else
+    exit 1
+fi
 
 ## remove existing SAG user/group
 notice 0 "Creating SAG account: user=$user, group=$group, home=$SAGHOME"
@@ -51,15 +59,39 @@ groupinfo -e $group && groupdel $group
 ## Creation 'sag' usr
 useradd -m -G $group -s /bin/ksh -d $SAGHOME $user
 
-## Cloning sag code with sag usr
-notice 0 "Retrieving SAG source from the repository"
-su - $user <<EOF
+if [[ "$install" = "git" ]]; then
+    ## Cloning sag code with sag usr
+    notice 0 "Retrieving SAG source from the repository"
+    su - $user <<EOF
 if cd $SAGHOME; then
     git clone $git_repos
+    mv sag/.git sag/* .
+    rmdir sag
+else
+    exit 1
+fi
+EOF
+elif [[ "$install" = "tgz" ]]; then
+    ## Downloading sag tarball from fuguita.org
+    notice 0 "Downloading SAG tarball"
+    su - $user <<EOF
+if cd $SAGHOME; then
+    ftp $tgz_url
 
     ## Put the files in order
-    mv sag/.git sag/* $SAGHOME && rmdir sag
-    ln -s $(which gnuplot) $SAGHOME/bin
+    tar -xvz -s '|^\./||' -s '|^sag/||' -f sag.tar.gz
+    rm sag.tar.gz
+else
+    exit 1
+fi
+EOF
+else
+    exit 1
+fi
+
+## copy template files to real location
+su - $user <<EOF
+if cd $SAGHOME; then
     cp $SAGHOME/conf/examples/dfplot.gp \
        $SAGHOME/conf/examples/netcmd.sh \
        $SAGHOME/conf/examples/postgproc.sh \

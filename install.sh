@@ -89,9 +89,11 @@ else
     exit 1
 fi
 
-## copy template files to real location
 su - $user <<EOF
 if cd $SAGHOME; then
+    ## make a symlink to gnuplot
+    ln -sf $(which gnuplot) bin
+    ## copy template files to real location
     cp $SAGHOME/conf/examples/dfplot.gp \
        $SAGHOME/conf/examples/netcmd.sh \
        $SAGHOME/conf/examples/postgproc.sh \

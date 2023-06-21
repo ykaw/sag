@@ -3,7 +3,7 @@
                                    
                 KAWAMATA、Yoshihiro - kaw@on.rim.or.jp
 
-           $Id: README.eucjp,v 1.3 2023/06/08 07:55:00 kaw Exp $
+           $Id: README.eucjp,v 1.4 2023/06/21 01:36:12 kaw Exp $
      ============================================================
 
 
@@ -46,36 +46,19 @@ SAG (System Activity Grapher)は、sh, awk, perlスクリプトからなる軽量
 SAGのプロジェクトページは https://fuguita.org/?SAG です。
 
 
-インストールの概要
+インストール方法
 
-以下はSAGのインストールの概要を説明したものです。具体的な手順につきま
-しては、同梱の INSTALL-JA.md 、あるいは
-https://fuguita.org/?SAG/2-%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB
-を参照して下さい。
+インストールはroot権限で行います。
 
+以下のURLからインストーラをダウンロードして下さい。
 
-0. SAGのユーザー/グループアカウントを確認する（または新たに作成する）。
-   セキュリティ上の理由から、SAGをスーパーユーザー(root)として実行する
-   ことはお勧めしません。
+  # ftp https://fuguita.org/sag/install.sh
 
-1. SAGパッケージを抽出して適切なディレクトリに配置します。
-   このディレクトリは 'SAGHOME'という環境変数に設定されます。
-   通常、SAGHOMEはアカウントのHOMEに相当することをお勧めします。
+インストーラを実行します。
 
-2. $SAGHOME/bin配下のgnuplotへのシンボリックリンクを作ります。
+  # sh ./install.sh
 
-3. $SAGHOME/conf/examplesで、rootとSAGアカウントのcrontabを再設定
-   します。
-   dfplot.gp, netcmd.sh, postgproc.sh, およびshconf.shを
-   $SAGHOME/confにコピーし、コピーしたファイルを編集してパラメータを
-   再設定します。
-   $SAGHOME/conf/examples/rc.localを/etc/rc.localに追加してください。
-
-4. CVS以外のすべてのファイルを$SAGHOME/plot/examplesから
-   $SAGHOME/plotにコピーします。
-   生成されたグラフのファイル形式を選択するには、$SAGHOME/plot/common.gp
-   を編集します。
-
-5. SAGのcrontabエントリを有効にします。
+設定ファイルを編集するためにエディタが立上ります。デフォルトの値でよけ
+れば、エディタをそのまま終了させて下さい。
 
      ============================================================

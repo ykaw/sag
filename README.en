@@ -3,7 +3,7 @@
                                    
                KAWAMATA, Yoshihiro  -  kaw@on.rim.or.jp
                                    
-           $Id: README.en,v 1.2 2023/06/08 07:55:00 kaw Exp $
+           $Id: README.en,v 1.3 2023/06/21 01:36:12 kaw Exp $
 ======================================================================
 
 
@@ -51,29 +51,19 @@ and easy to port to other unix-like systems.
 
 The SAG project page is https://fuguita.org/?SAG .
 
-OUTLINE OF INSTALL
+INSTALLATION PROCEDURE
 
-Below is an overview of the SAG installation. For the specific
-procedure, refer to the included INSTALL-EN.md or
-https://fuguita.org/?SAG/2-%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB
+Installation is done with root privileges.
 
-0. Ensure (or newly make) a SAG's user/group account.
-   For security reasons, we don't recommend running SAG as a superuser (root).
+Please download the installer from the following URL.
 
-1. Extract and locate the SAG package to an appropriate directory.
-   This directory will be set to an environment variable called 'SAGHOME' .
-   Ordinary, SAGHOME is recommended to be equivalent to the account's HOME.
+   # ftp https://fuguita.org/sag/install.sh
 
-2. Make symlinks reffering to gnuplot, under $SAGHOME/bin .
+Run the installer.
 
-3. On $SAGHOME/conf/examples, reconfigure crontabs of root and the SAG acount.
-   Copy dfplot.gp, netcmd.sh, postgproc.sh and shconf.sh to $SAGHOME/conf ,
-   then edit those copied files to reconfigure parameters.
-   Add $SAGHOME/conf/examples/rc.local to /etc/rc.local .
+   # sh ./install.sh
 
-4. Copy all files except CVS from $SAGHOME/plot/examples to $SAGHOME/plot .
-   Edit $SAGHOME/plot/common.gp , to choose file format of generated graphs.
-
-5. Activate SAG's crontab entry.
+An editor will be launched to edit the configuration file. If the
+default values are acceptable, simply exit the editor.
 
 ======================================================================

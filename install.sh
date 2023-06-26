@@ -23,15 +23,82 @@ git_repos='https://github.com/ykaw/sag'
    editor="${EDITOR:-/usr/bin/vi}"  # set default editor to vi
   install='tgz'  # git or tgz
 
-notice () {
-    local wait=$1; shift
-    if [[ 1 -le $wait ]]; then
-        clear
-        echo "##" "$@"
-        sleep $wait
-    else
-	echo "##" "$@"
+
+#-------------------
+# echo to stderr
+#
+echo2 () {
+    echo "$@" >&2
+}
+
+#-------------------
+# ask user yes or no
+# outputs answer to stdout
+#
+#     usage: ask_yn prompt yn
+#
+#       yn ... y: defaults to yes
+#              n: defaults to no
+#              r: no default ... ask again
+#              else: no default ... return -1 if answered not yn
+#
+#       output ... 1: yes, 0: no, -1: else yn, -2: error occured
+#
+function ask_yn {
+
+    if [ -z "$2" ]; then
+        echo -2
+        return
     fi
+
+    local prompt="$1"; shift
+    local yn_default="$1"; shift
+    local yn_ans
+
+    case X"$yn_default"X in
+        X[Yy]X) yn_default=Y; prompt="$prompt [Y/n] -> " ;;
+        X[Nn]X) yn_default=N; prompt="$prompt [y/N] -> " ;;
+        X[Rr]X) yn_default=R; prompt="$prompt [y/n] -> " ;;
+        *)      yn_default=E; prompt="$prompt [y/n] -> " ;;
+    esac
+
+    while :; do
+        echo2 -n "$prompt"; read yn_ans
+
+        case X"$yn_ans"X in
+            X[Yy]X) echo 1; return;;
+            X[Nn]X) echo 0; return;;
+            XX)
+                case X"$yn_default"X in
+                    XYX) echo 1;  return;;
+                    XNX) echo 0;  return;;
+                    XRX) continue;;
+                    *)   echo -1; return;;
+                esac;;
+            *)
+                continue;;
+        esac
+    done
+}
+
+#-------------------
+# output notice message
+#   usage: notice cmd messages...
+#
+#   if cmd is "yn", the answer will
+#   output to stdout
+#
+notice () {
+    local cmd=$1; shift
+    case "$cmd" in
+	"c")
+            clear >&2
+            echo2 "==== $@";;
+	"yn")
+	    echo $(ask_yn "==== $@" n);;
+	*)
+            echo2 "==== $@";;
+    esac
 }
 
 ## Are we root?
@@ -88,6 +155,7 @@ EOF
 else
     exit 1
 fi
+notice 0 "SAG tarball extracted"
 
 su - $user <<EOF
 if cd $SAGHOME; then
@@ -122,10 +190,13 @@ END { printf("\n") }'
 EOF
  df -h | sed -e 's/^/# /' ) > $SAGHOME/conf/dfplot.gp
                             # This redirection is for preserve file attributes.
-notice 5 "Edit dfplot.gp - specify disk partitions to plot, if necessary."
-su - $user -c "$editor $SAGHOME/conf/dfplot.gp"
 
-notice 5 "Edit netcmd.sh - specify the network interface to plot."
+notice 0 "Here is generated dfplot.gp"
+cat $SAGHOME/conf/dfplot.gp
+if [[ $(notice yn "Edit this file?") -eq 1 ]]; then
+    su - $user -c "$editor $SAGHOME/conf/dfplot.gp"
+fi
+
 ## find appropriate network interface
 netdev=$(ifconfig -a | awk '
 BEGIN            { FS=":" }
@@ -138,15 +209,21 @@ END { if (egress=="") {
           print egress
       }
     }')
-echo netdev is $netdev
 if [[ -n "$netdev" ]]; then
     # replace template to the device found
     su - $user -c "sed -i -e 's/bce0/$netdev/' $SAGHOME/conf/netcmd.sh"
 fi
-su - $user -c "$editor $SAGHOME/conf/netcmd.sh"
+notice 0 "Here is generated netcmd.sh"
+cat $SAGHOME/conf/netcmd.sh
+if [[ $(notice yn "Edit this file?") -eq 1 ]]; then
+    su - $user -c "$editor $SAGHOME/conf/netcmd.sh"
+fi
 
-notice 5 "Edit shconf.sh - specify spans to archive logs and plot graphs."
-su - $user -c "$editor $SAGHOME/conf/shconf.sh"
+notice 0 "Here is shconf.sh"
+cat $SAGHOME/conf/shconf.sh
+if [[ $(notice yn "Edit this file?") -eq 1 ]]; then
+    su - $user -c "$editor $SAGHOME/conf/shconf.sh"
+fi
 
 notice 0 "Preparing stuffs to aggregate and plot data"
 su - $user <<EOF
@@ -184,11 +261,13 @@ cp $SAGHOME/conf/examples/index.html /var/www/htdocs/sag
 chown -R ${user}:${group} /var/www/htdocs/sag
 
 ## As sag we finishing the last edits
-notice 5 "Edit a script to copy graphs to Web. if not needed, leave this untouched."
-su - $user -c "$editor $SAGHOME/conf/postgproc.sh"
+notice 0 "Here is postgproc.sh, a script to copy graphs to Web. if not needed, leave this untouched."
+cat $SAGHOME/conf/postgproc.sh
+if [[ $(notice yn "Edit this file?") -eq 1 ]]; then
+    su - $user -c "$editor $SAGHOME/conf/postgproc.sh"
+fi
 
 ## Warning about add httpd(8)
-notice 1 "All done."
 notice 0 ""
+notice 0 "All done."
 notice 0 "You need to add the entry on your httpd.conf(8) file."
-notice 0 ""

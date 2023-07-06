@@ -10,4 +10,5 @@ set output output_fname("0005timeofs")
 
 plot "sumtmp-0005timeofs" using 1:4 title "DELAY" , \
      "sumtmp-0005timeofs" using 1:5 title "JITTER", \
-     "sumtmp-0005timeofs" using 1:3 title "OFFSET+" with steps
+     "sumtmp-0005timeofs" using 1:(0<$3 ?  $3 : 1/0) title "OFFSET+" with steps, \
+     "sumtmp-0005timeofs" using 1:($3<0 ? -$3 : 1/0) title "OFFSET-" with steps

@@ -103,9 +103,20 @@ notice () {
 
 ## Are we root?
 if [[ "$(whoami)" != "root" ]]; then
-    notice 0 "You must be root - please enter your password."
-    doas "$0" "$@"
-    exit $?
+    notice 0 "You must be root."
+    exit 1
+fi
+
+## Check SAG data already exists
+if [[ -e $SAGHOME ]]; then
+    notice 0 "$SAGHOME already exists"
+    mvhome=${SAGHOME}_$(date +%s)_$$
+    if [[ $(notice yn "Backup $SAGHOME, then proceed install?") -eq 1 ]]; then
+	mv $SAGHOME $mvhome
+	notice 0 "$SAGHOME renamed as $mvhome"
+    else
+	exit 0
+    fi
 fi
 
 ## Need it software

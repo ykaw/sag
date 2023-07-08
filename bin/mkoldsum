@@ -2,7 +2,7 @@
 
 #  mkoldsum  -  build ``sumold-*'' data summary cache
 #
-#  $Id: mkoldsum,v 1.13 2021/10/05 23:44:50 kaw Exp $
+#  $Id: mkoldsum,v 1.14 2023/07/08 20:46:38 kaw Exp $
 
 cd $SAGHOME/var || exit 1
 
@@ -29,5 +29,5 @@ do
 
     [ -z "$sumcmd" ] && continue
 
-    gzip -dc $(ls -1r rl${target%%[a-z]*}-???.gz | tail -$span) | $sumcmd >sumold-$target
+    gzip -dc $(ls -1d rl${target%%[a-z]*}-????????.gz | tail -n $span) | $sumcmd >sumold-$target
 done

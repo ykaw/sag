@@ -2,14 +2,22 @@
 
 #  rorate  -  Re-archiving files and split raw data file
 #
-#  $Id: rotate,v 1.19 2021/10/05 14:55:54 kaw Exp $
+#  $Id: rotate,v 1.20 2023/07/08 20:46:38 kaw Exp $
 
 cd $SAGHOME/var || exit 1
 
 . $SAGHOME/conf/shconf.sh || exit 1
 
 for period in $(echo $targets | tr -sc 0-9 '\012' | sort | uniq); do
-    ../bin/fnrot $rotate_max rl${period}-%03d.gz
+
+    # remove expired files
+    #
+    expfiles=$(ls -1d rl${period}-????????.gz | wc -l)
+    if [[ 0 < $rotate_max && 0 < $expfiles ]]; then
+	if [[ $rotate_max < $expfiles ]]; then
+	    ls -1d rl${period}-????????.gz | head -n $((expfiles - rotate_max)) | xargs rm -f
+	fi
+    fi
 
     # create yesterday's file to archive
     #        today's older file
@@ -19,10 +27,26 @@ for period in $(echo $targets | tr -sc 0-9 '\012' | sort | uniq); do
     mv -f rl${period}     rl${period}_tmp2  # data after yesterday's split_byday (today's data included)
     touch rl${period}                       # new file to update later
 
+
     # split data in two - yesterday's data and today's data
+    cat rl${period}_tmp1 rl${period}_tmp2 | ../bin/split_byday $rl${period}_tmp3 rl${period}-000
+
+    # find and set (last) timestamp
     #
-    cat rl${period}_tmp1 rl${period}_tmp2 | ../bin/split_byday rl${period}-001 rl${period}-000
-    gzip -9 rl${period}-001
+    set -- $(zgrep '^=dt [1-9][0-9][0-9][0-9] [0-9][0-9] [0-9][0-9] [0-9][0-9] [0-9][0-9]$' "${period}_tmp3" | tail -n 1)
+    daytime="$2$3$4"  # YYYYMMDD
+
+    # set file name to archive: rlPPPP-YYYYMMDD - the date is yesterday
+    #
+    if [[ -n "$daytime" ]]; then
+        arcfile=rl${period}-$daytime
+    else
+        # no timestamp in the logfile
+        arcfile=rl${period}-$(date -r $(($(date +%s)-86400)) +%Y%m%d)
+    fi
+    mv ${period}_tmp3 $arcfile
+
+    gzip -9 $arcfile
     rm -f rl${period}_tmp1 rl${period}_tmp2
 done
 

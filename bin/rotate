@@ -2,22 +2,13 @@
 
 #  rorate  -  Re-archiving files and split raw data file
 #
-#  $Id: rotate,v 1.21 2023/07/09 16:07:32 kaw Exp $
+#  $Id: rotate,v 1.22 2023/07/09 21:44:01 kaw Exp $
 
 cd $SAGHOME/var || exit 1
 
 . $SAGHOME/conf/shconf.sh || exit 1
 
 for period in $(echo $targets | tr -sc 0-9 '\012' | sort | uniq); do
-
-    # remove expired files
-    #
-    expfiles=$(ls -1d rl${period}-????????.gz | wc -l)
-    if [[ 0 -lt $rotate_max && 0 -lt $expfiles ]]; then
-	if [[ $rotate_max -lt $expfiles ]]; then
-	    ls -1d rl${period}-????????.gz | head -n $((expfiles - rotate_max)) | xargs rm -f
-	fi
-    fi
 
     # create yesterday's file to archive
     #        today's older file
@@ -45,8 +36,16 @@ for period in $(echo $targets | tr -sc 0-9 '\012' | sort | uniq); do
         arcfile=rl${period}-$(date -r $(($(date +%s)-86400)) +%Y%m%d)
     fi
     mv ${period}_tmp3 $arcfile
-
     gzip -9 $arcfile
+
+    # remove expired and temporary files
+    #
+    expfiles=$(ls -1d rl${period}-????????.gz | wc -l)
+    if [[ 0 -lt $rotate_max && 0 -lt $expfiles ]]; then
+	if [[ $rotate_max -le $expfiles ]]; then
+	    ls -1d rl${period}-????????.gz | head -n $((expfiles - rotate_max + 1)) | xargs rm -f
+	fi
+    fi
     rm -f rl${period}_tmp1 rl${period}_tmp2
 done
 

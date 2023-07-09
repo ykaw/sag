@@ -2,7 +2,7 @@
 
 #  rorate  -  Re-archiving files and split raw data file
 #
-#  $Id: rotate,v 1.20 2023/07/08 20:46:38 kaw Exp $
+#  $Id: rotate,v 1.21 2023/07/09 16:07:32 kaw Exp $
 
 cd $SAGHOME/var || exit 1
 
@@ -13,8 +13,8 @@ for period in $(echo $targets | tr -sc 0-9 '\012' | sort | uniq); do
     # remove expired files
     #
     expfiles=$(ls -1d rl${period}-????????.gz | wc -l)
-    if [[ 0 < $rotate_max && 0 < $expfiles ]]; then
-	if [[ $rotate_max < $expfiles ]]; then
+    if [[ 0 -lt $rotate_max && 0 -lt $expfiles ]]; then
+	if [[ $rotate_max -lt $expfiles ]]; then
 	    ls -1d rl${period}-????????.gz | head -n $((expfiles - rotate_max)) | xargs rm -f
 	fi
     fi

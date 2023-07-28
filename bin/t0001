@@ -1,10 +1,11 @@
 #  t0001  -  executing every minute
 #
-#  $Id: t0001,v 1.7 2021/10/05 02:29:26 kaw Exp $
+#  $Id: t0001,v 1.8 2023/07/28 02:00:04 kaw Exp $
 
 (echo =dt $DAYTIME
  echo =la $(sysctl -n vm.loadavg)
  . ./conf/netcmd.sh
  echo =net
  eval $netcmd
- echo =end) >> var/rl0001
+ echo =end
+ echo =procs $(sysctl -n kern.forkstat.forks)) >> var/rl0001

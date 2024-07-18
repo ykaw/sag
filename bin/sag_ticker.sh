@@ -22,7 +22,12 @@ wait_next_sec () {
                     # next arith. expansion
     if ! sleep $((60 + $1 - min)); then
 	err "interval sleep with error"
-        sleep 60  # to avoid sleepless loop
+
+        # to avoid sleepless loop
+        if ! sleep 60; then
+            # maybe unrecoverable - bailing out
+            err_exit "sleep command failed"
+        fi
     fi
 }
 
@@ -42,7 +47,7 @@ sag_driver () {
     [[ "$min" = "50" ]]         && commands="${commands}; ./bin/t0100"
     [[ "$hour:$min" = "3:55" ]] && commands="${commands}; ./bin/t2400"
 
-    nice -n 15 /bin/sh -c "$commands"  # exec commands with low priority
+    /bin/sh -c "$commands"
 }
 
 # environment check and setup

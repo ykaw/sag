@@ -1,6 +1,6 @@
 #  t0100  -  executing every hour
 #
-#  $Id: t0100,v 1.8 2021/10/05 02:29:26 kaw Exp $
+#  $Id: t0100,v 1.9 2024/07/18 04:22:03 kaw Exp $
 
 (echo =dt $DAYTIME
  echo =time $(cat /var/db/ntpd.drift)
@@ -8,5 +8,5 @@
  df
  echo =end) >> var/rl0100
 
-$SAGHOME/bin/gengraph
-$SAGHOME/conf/postgproc.sh &
+( $SAGHOME/bin/gengraph
+  $SAGHOME/conf/postgproc.sh ) &

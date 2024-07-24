@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export SAGHOME=/home/kaw/sag
+export SAGHOME=/home/sag
 
 progname=${0##*/}
    ticker="sag_ticker.sh"
@@ -35,7 +35,7 @@ case "$1" in
     ;;
     stop)
         ticker_pid=$(is_ticker_run) || err_exit "$ticker is not running"
-        kill -HUP $ticker_pid
+        kill -TERM $ticker_pid
         ;;
     status)
         if ticker_pid=$(is_ticker_run); then

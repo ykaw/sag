@@ -21,7 +21,8 @@ set -e
 git_repos='https://github.com/ykaw/sag'
   tgz_url='https://fuguita.org/sag/sag.tar.gz'
    editor="${EDITOR:-/usr/bin/vi}"  # set default editor to vi
-  install='tgz'  # git or tgz
+  install='localtgz'    # git, tgz or localtgz
+scheduler='standalone'  # cron or standalone
 
 
 #-------------------
@@ -121,21 +122,25 @@ fi
 
 ## Need it software
 notice 0 "Installing dependencies from package"
-if [[ "$install" = "git" ]]; then
-    pkg_add git gnuplot--
-elif [[ "$install" = "tgz" ]]; then
-    pkg_add gnuplot--
-else
-    exit 1
-fi
+case "$install" in
+    git)
+        pkg_add git gnuplot--
+        ;;
+    tgz|localtgz)
+        pkg_add gnuplot--
+        ;;
+    *)
+        exit 1
+        ;;
+esac
 
 ## remove existing SAG user/group
 notice 0 "Creating SAG account: user=$user, group=$group, home=$SAGHOME"
  userinfo -e $user  &&  userdel -r $user
 groupinfo -e $group && groupdel $group
 
-## Creation 'sag' usr
-useradd -m -G $group -s /bin/ksh -d $SAGHOME $user
+## Creation 'sag' user
+useradd -m -G $group -s /bin/sh -d $SAGHOME $user
 
 if [[ "$install" = "git" ]]; then
     ## Cloning sag code with sag usr
@@ -159,6 +164,17 @@ if cd $SAGHOME; then
     ## Put the files in order
     tar -xvz -s '|^\./||' -s '|^sag/||' -f sag.tar.gz
     rm sag.tar.gz
+else
+    exit 1
+fi
+EOF
+elif [[ "$install" = "localtgz" ]]; then
+    ## mainly for debugging
+    notice 0 "Extracting sag.tar.gz at current working directory"
+    ocwd=$(pwd)
+    su - $user <<EOF
+if cd $SAGHOME; then
+    cat ${ocwd}/sag.tar.gz | tar -xvz -s '|^\./||' -s '|^sag/||' -f -
 else
     exit 1
 fi
@@ -242,28 +258,43 @@ su - $user <<EOF
 cp $SAGHOME/plot/examples/common.gp \
    $SAGHOME/plot/examples/gen* \
    $SAGHOME/plot
-mkdir $SAGHOME/var
+mkdir -p $SAGHOME/var
 EOF
 
 ## As root now we setup the rest
-
 notice 0 "Setting up root's crontab"
 if ! crontab -l | fgrep -q 'ntpctl -s all'; then  # to avoid dupulicate append
     (crontab -l; cat $SAGHOME/conf/examples/crontab-root) | crontab -
 fi
 
-notice 0 "Setting up the startup file"
-if [[ -f /etc/rc.local ]] \
-       && fgrep -q '# for System Activity Grapher' /etc/rc.local; then  # to avoid dupulicate append
-    :  # rc.local set up already - do nothing
-else
-    cat $SAGHOME/conf/examples/rc.local >> /etc/rc.local
-    sed -i -e "s|PATH-TO-CMD/bin/addgap|$SAGHOME/bin/addgap|" /etc/rc.local
-fi
+if [[ "$scheduler" = "cron" ]]; then
+    notice 0 "Setting up the startup file"
+    if [[ -f /etc/rc.local ]] \
+           && fgrep -q '# for System Activity Grapher' /etc/rc.local; then  # to avoid dupulicate append
+        :  # rc.local set up already - do nothing
+    else
+        cat $SAGHOME/conf/examples/rc.local >> /etc/rc.local
+        sed -i -e "s|PATH-TO-CMD/bin/addgap|$SAGHOME/bin/addgap|" /etc/rc.local
+    fi
 
-notice 0 "Setting up ${user}'s crontab"
-crontab -u $user -r 2>/dev/null || true # to clear crontab if exists
-sed -e "s|^SAGHOME=.*|SAGHOME=$SAGHOME|" $SAGHOME/conf/examples/crontab | crontab -u $user -
+    notice 0 "Setting up ${user}'s crontab"
+    crontab -u $user -r 2>/dev/null || true # to clear crontab if exists
+    sed -e "s|^SAGHOME=.*|SAGHOME=$SAGHOME|" $SAGHOME/conf/examples/crontab | crontab -u $user -
+elif [[ "$scheduler" = "standalone" ]]; then
+    notice 0 "Setting up the startup file"
+    cat <<EOF >> /etc/rc.local
+# for System Activity Grapher
+
+# setups for ntp monitoring
+#
+touch /tmp/ntpctl.out
+chown sag:sag /tmp/ntpctl.out
+chmod 0640 /tmp/ntpctl.out
+
+# starting up SAG
+su -l sag -c '/home/sag/bin/sag_rc.sh start'
+EOF
+fi
 
 ## Web related settings
 notice 0 "Setting up web-related stuffs"

@@ -2,7 +2,7 @@
 
 #  addgap  -  make gap when off duty
 #
-#  $Id: addgap,v 1.6 2021/10/05 14:26:45 kaw Exp $
+#  $Id: addgap,v 1.7 2024/07/25 03:37:18 kaw Exp $
 
 
 # move to $SAGHOME
@@ -13,5 +13,7 @@ cd $SAGHOME || exit 1
 # add gap tag to every raw logs
 #
 for rawlog in $SAGHOME/var/rl[0-9][0-9][0-9][0-9]; do
-    echo '=gap' >> $rawlog
+    if [[ -f "$rawlog" ]]; then
+        echo '=gap' >> "$rawlog"
+    fi
 done

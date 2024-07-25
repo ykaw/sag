@@ -11,19 +11,7 @@
 
 ## DEBUG
 #set -x
-
 set -e
-
-## parameters
-     user='sag'
-    group="$user"
-  SAGHOME="/home/$user"; export SAGHOME
-git_repos='https://github.com/ykaw/sag'
-  tgz_url='https://fuguita.org/sag/sag.tar.gz'
-   editor="${EDITOR:-/usr/bin/vi}"  # set default editor to vi
-  install='localtgz'    # git, tgz or localtgz
-scheduler='standalone'  # cron or standalone
-
 
 #-------------------
 # echo to stderr
@@ -83,6 +71,114 @@ function ask_yn {
 }
 
 #-------------------
+# ask selection out of multiple items
+# outputs answer to stdout
+#
+#     usage: ask_which prompt default item1 item2 ...
+#
+#       Note: although user's choice is one originated
+#             default is zero originated
+#
+#       output: first word of selected item
+#               returns empty line unless selected normally
+#
+function ask_which {
+    if [ $# -lt 3 ]; then
+        return
+    fi
+
+    local prompt="$1";  shift
+    local default="$1"; shift
+    local i item val
+
+    # skip null item
+    #
+    i=0
+    for val in "$@"; do
+        if [ -n "$val" ]; then
+           item[$i]="$val"
+           i=$((i+1))
+        fi
+    done
+
+    # only one item is default itself
+    #
+    [ "${#item[@]}" = 1 ] && default=${item[0]}
+
+    i=0
+    while [ -n "${item[$i]}" ]; do
+        if [ "$default" = "${item[$i]}" ]; then
+            OIFS="$IFS"
+            IFS= prompt="$prompt\n"`printf '%3d: [%s]' $((i+1)) ${item[$i]}`
+            IFS="$OIFS"
+        else
+            OIFS="$IFS"
+            IFS= prompt="$prompt\n"`printf '%3d:  %s' $((i+1)) ${item[$i]}`
+            IFS="$OIFS"
+        fi
+        i=$((i+1))
+    done
+    echo "$prompt" >&2
+
+    local ans
+    ans=`rl_wread '' ''`
+
+    # take first argument
+    #
+    set -- $ans
+    ans=$1
+    
+    # return selected item
+    #
+    if expr "$ans" : '^[0-9][0-9]*$' >/dev/null && \
+       [ "$ans" -le ${#item[@]} ]; then
+        set -- ${item[$((ans-1))]}
+        echo $1
+    elif [ -n "$default" -a -z "$ans" ]; then
+        set -- $default
+        echo $1
+    fi
+}
+
+#-------------------
+# read user's input with readline functionality
+# outputs echoed to stdout
+#
+#     usage: rl_wread prompt-str default-str [completion words ....]
+#
+function rl_wread {
+    local prompt="$1";  shift
+    local default="$1"; shift
+    local retval
+
+    # check if rlwrap is available
+    #   When control tty is missing (in /etc/rc.shutdown for example),
+    #   rlwrap in command substitution "$(rlwrap ...) " fails.
+    if retval=$(/usr/local/bin/rlwrap true) 2>/dev/null; then
+        echo "$@" > $lockdir/rl_words
+        rlwrap -b '' \
+               -f $lockdir/rl_words \
+               -P "$default" \
+               sh -f -c 'echo -n "'"$prompt"'->" >&2 ; read w || echo EOF; echo $w' || echo RL_ERR
+    else
+        #-------------------
+        # fallback to dumb input
+        #
+        if [ X"$default" = X ]; then
+            echo -n "${prompt}->" >&2
+            read w
+        else
+            echo -n "$prompt [$default] -> " >&2
+            read w
+            if [ X"$w" = X ]; then
+              w="$default"
+            fi
+        fi
+        echo $w
+    fi
+}
+
+#-------------------
 # output notice message
 #   usage: notice cmd messages...
 #
@@ -102,11 +198,25 @@ notice () {
     esac
 }
 
+#=======================
+# Active Code from here
+#=======================
+
 ## Are we root?
 if [[ "$(whoami)" != "root" ]]; then
     notice 0 "You must be root."
     exit 1
 fi
+
+## parameters
+     user='sag'
+    group="$user"
+  SAGHOME="/home/$user"; export SAGHOME
+git_repos='https://github.com/ykaw/sag'
+  tgz_url='https://fuguita.org/sag/sag.tar.gz'
+   editor="${EDITOR:-/usr/bin/vi}"  # set default editor to vi
+  install='localtgz'    # git, tgz or localtgz
+scheduler=$(ask_which 'Select installation type:' 'standalone' 'cron' 'standalone')
 
 ## Check SAG data already exists
 if [[ -e $SAGHOME ]]; then
@@ -162,7 +272,7 @@ if cd $SAGHOME; then
     ftp $tgz_url
 
     ## Put the files in order
-    tar -xvz -s '|^\./||' -s '|^sag/||' -f sag.tar.gz
+    tar -xz -s '|^\./||' -s '|^sag/||' -f sag.tar.gz
     rm sag.tar.gz
 else
     exit 1
@@ -174,7 +284,7 @@ elif [[ "$install" = "localtgz" ]]; then
     ocwd=$(pwd)
     su - $user <<EOF
 if cd $SAGHOME; then
-    cat ${ocwd}/sag.tar.gz | tar -xvz -s '|^\./||' -s '|^sag/||' -f -
+    cat ${ocwd}/sag.tar.gz | tar -xz -s '|^\./||' -s '|^sag/||' -f -
 else
     exit 1
 fi
@@ -280,6 +390,8 @@ if [[ "$scheduler" = "cron" ]]; then
     notice 0 "Setting up ${user}'s crontab"
     crontab -u $user -r 2>/dev/null || true # to clear crontab if exists
     sed -e "s|^SAGHOME=.*|SAGHOME=$SAGHOME|" $SAGHOME/conf/examples/crontab | crontab -u $user -
+
+    chmod 0644 $SAGHOME/bin/t[0-9][0-9][0-9][0-9]
 elif [[ "$scheduler" = "standalone" ]]; then
     notice 0 "Setting up the startup file"
     cat <<EOF >> /etc/rc.local
@@ -294,6 +406,7 @@ chmod 0640 /tmp/ntpctl.out
 # starting up SAG
 su -l sag -c '/home/sag/bin/sag_rc.sh start'
 EOF
+    chmod 0744 $SAGHOME/bin/t[0-9][0-9][0-9][0-9]
 fi
 
 ## Web related settings
@@ -311,5 +424,16 @@ fi
 
 ## Warning about add httpd(8)
 notice 0 ""
-notice 0 "All done."
 notice 0 "You need to add the entry on your httpd.conf(8) file."
+
+## startup SAG with standalone mode
+if [[ "$scheduler" = standalone ]]; then
+    notice 0 ""
+    if [[ $(notice yn "start SAG now?") -eq 1 ]]; then
+        su - $user -c "$SAGHOME/bin/sag_rc.sh start"
+        sleep 5
+        su - $user -c "$SAGHOME/bin/sag_rc.sh status"
+    else
+        notice 0 "SAG will be active since subsequent boot."
+    fi
+fi

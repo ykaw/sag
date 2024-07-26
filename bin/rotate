@@ -2,7 +2,7 @@
 
 #  rorate  -  Re-archiving files and split raw data file
 #
-#  $Id: rotate,v 1.22 2023/07/09 21:44:01 kaw Exp $
+#  $Id: rotate,v 1.23 2024/07/26 19:01:26 kaw Exp $
 
 cd $SAGHOME/var || exit 1
 
@@ -36,7 +36,7 @@ for period in $(echo $targets | tr -sc 0-9 '\012' | sort | uniq); do
         arcfile=rl${period}-$(date -r $(($(date +%s)-86400)) +%Y%m%d)
     fi
     mv ${period}_tmp3 $arcfile
-    gzip -9 $arcfile
+    gzip -9f $arcfile
 
     # remove expired and temporary files
     #

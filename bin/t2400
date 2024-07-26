@@ -1,5 +1,5 @@
 #  t2400  -  execute every day
 #
-#  $Id: t2400,v 1.5 2024/07/18 04:22:03 kaw Exp $
+#  $Id: t2400,v 1.6 2024/07/26 19:01:26 kaw Exp $
 
-$SAGHOME/bin/rotate &
+/usr/bin/nice -n 15 /bin/sh -c "$SAGHOME/bin/rotate" &

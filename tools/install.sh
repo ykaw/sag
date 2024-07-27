@@ -208,6 +208,14 @@ if [[ "$(whoami)" != "root" ]]; then
     exit 1
 fi
 
+## lock installtion process
+lockdir=/tmp/saginstall_lock
+if ! mkdir "$lockdir"; then
+    notice 0 "Another installer runninng, or remove ${lockdir}."
+    exit 1
+fi
+trap "rmdir $lockdir" EXIT
+
 ## parameters
      user='sag'
     group="$user"

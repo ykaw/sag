@@ -202,6 +202,17 @@ notice () {
 # Active Code from here
 #=======================
 
+## environment check
+os_sys='OpenBSD'
+os_rev='5.5'
+if [[ "$(uname -s)" != "$os_sys" ]];then
+    notice 0 "This installer is for the $os_sys operating system."
+    exit 1
+elif [[ "$(uname -r)" < "$os_rev" ]]; then
+    notice 0 "This installer is for $os_sys $os_rev or later."
+    exit 1
+fi
+
 ## Are we root?
 if [[ "$(whoami)" != "root" ]]; then
     notice 0 "You must be root."
